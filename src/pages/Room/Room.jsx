@@ -113,7 +113,7 @@ const RoomPage = () => {
           };
           
   return (
-    <div className="relative h-screen w-full bg-gray-900 text-white flex flex-col">
+    <div className="relative h-[100vh] w-full bg-gray-900 text-white flex flex-col">
       {/* Remote Video */}
       <div
         ref={remoteContainerRef}
