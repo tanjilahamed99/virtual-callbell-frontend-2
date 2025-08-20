@@ -13,6 +13,7 @@ import axios from "axios";
 import setAuthToken from "../config/setAuthToken";
 import { BASE_URL } from "../config/constant";
 import socket from "../utils/soket";
+import Swal from "sweetalert2";
 
 const CallContext = createContext();
 
@@ -26,6 +27,19 @@ export const Provider = ({ children }) => {
   const [token, setToken] = useState(null);
 
   console.log(user);
+
+  const logout = async () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setToken(null);
+    setUser({});
+    Swal.fire({
+      title: "Successful",
+      text: "You have logged out!",
+      icon: "success",
+    });
+    navigate("/");
+  };
 
   // ✅ INIT LOGIC (moved from your init.js)
   useEffect(() => {
@@ -151,6 +165,7 @@ export const Provider = ({ children }) => {
     setUser,
     token,
     setToken,
+    logout
   };
 
   return <CallContext.Provider value={data}>{children}</CallContext.Provider>;

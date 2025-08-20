@@ -1,18 +1,12 @@
-"use client";
-
 import { Menu } from "lucide-react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React, { useRef } from "react";
-import { useGlobal } from "reactn";
-import Swal from "sweetalert2";
+import { useRef } from "react";
+import { useCall } from "../../Provider/Provider";
+import { Link, useLocation } from "react-router-dom";
 
 const Drawer = () => {
-  const pathname = usePathname();
+  const pathname = useLocation();
   const drawerRef = useRef(null);
-  const [user, setUser] = useGlobal("user");
-  const setToken = useGlobal("token")[1];
-  const router = useRouter();
+  const { logout } = useCall();
 
   // Function to close the drawer
   const closeDrawer = () => {
@@ -21,17 +15,8 @@ const Drawer = () => {
     }
   };
 
-  const logout = async () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    await setToken(null);
-    await setUser({});
-    Swal.fire({
-      title: "Successful",
-      text: "You have logged out!",
-      icon: "success",
-    });
-    router.push("/");
+  const handleLogout = () => {
+    logout();
   };
 
   // Sidebar links
@@ -76,7 +61,7 @@ const Drawer = () => {
                 </li>
               ))}
               <li
-                onClick={logout}
+                onClick={handleLogout}
                 className={`hover:bg-indigo-600  px-3 py-2 rounded-lg cursor-pointer transition`}>
                 <p>Logout</p>
               </li>

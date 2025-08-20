@@ -1,28 +1,14 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React from "react";
-import { useGlobal } from "reactn";
-import Swal from "sweetalert2";
+import { Link, useLocation } from "react-router-dom";
+import { useCall } from "../../Provider/Provider";
 
 const UserDashboardNavLinks = () => {
-  const pathname = usePathname();
-  const [user, setUser] = useGlobal("user");
-  const setToken = useGlobal("token")[1];
-  const router = useRouter();
+  const pathname = useLocation();
+  const { logout } = useCall();
 
-  const logout = async () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    await setToken(null);
-    await setUser({});
-    Swal.fire({
-      title: "Successful",
-      text: "You have logged out!",
-      icon: "success",
-    });
-    router.push("/");
+  const handleLogout = () => {
+    logout();
   };
 
   const ulLinks = (
@@ -52,7 +38,7 @@ const UserDashboardNavLinks = () => {
         <Link href={"/dashboard/transactions"}>Transaction</Link>
       </li>
       <li
-        onClick={logout}
+        onClick={handleLogout}
         className={`hover:bg-indigo-600  px-3 py-2 rounded-lg cursor-pointer transition`}>
         Logout
       </li>

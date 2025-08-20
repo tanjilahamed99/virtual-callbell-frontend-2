@@ -1,4 +1,4 @@
-import { BASE_URL } from "@/config/constant";
+import { BASE_URL } from "../../config/constant";
 import axios from "axios";
 
 const updateUser = ({ id, data }) => {
