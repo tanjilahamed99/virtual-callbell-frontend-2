@@ -1,14 +1,20 @@
 "use client";
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCall } from "../../Provider/Provider";
+import { ArrowLeft } from "lucide-react";
 
 const UserDashboardNavLinks = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const { logout } = useCall();
 
   const handleLogout = () => {
     logout();
+  };
+
+  const handleBack = () => {
+    navigate(-1);
   };
 
   const ulLinks = (
@@ -47,7 +53,10 @@ const UserDashboardNavLinks = () => {
 
   return (
     <>
-      <h1 className="text-2xl font-bold mb-8">Virtual Callbell</h1>
+      <div className="flex flex-row justify-between items-center mb-8">
+        <ArrowLeft className="cursor-pointer border" onClick={handleBack} />
+        <h1 className="text-2xl font-bold">Virtual Callbell</h1>
+      </div>
       <ul className="space-y-1">{ulLinks}</ul>
     </>
   );
