@@ -1,30 +1,29 @@
-// import { useGlobal } from "reactn";
 import Swal from "sweetalert2";
-// import QrScanner from "../Dashboard/QrScaner";
 import { Link } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useCall } from "../../Provider/Provider";
+import QrScanner from "../Dashboard/QrScaner";
 
 const Navbar = () => {
-  // const [user, setUser] = useGlobal("user");
-  // const setToken = useGlobal("token")[1];
-  // const navigate = useNavigate();
+  const { user, setUser, setToken } = useCall();
+  const navigate = useNavigate();
 
-  // const logout = async () => {
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("user");
-  //   // await setToken(null);
-  //   // await setUser({});
-  //   Swal.fire({
-  //     title: "Successful",
-  //     text: "You have logged out!",
-  //     icon: "success",
-  //   });
-  //   navigate("/");
-  // };
+  const logout = async () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setToken(null);
+    setUser({});
+    Swal.fire({
+      title: "Successful",
+      text: "You have logged out!",
+      icon: "success",
+    });
+    navigate("/");
+  };
 
   const ulLInks = (
     <>
-      {/* <div className="hidden lg:block">{!user?.id && <QrScanner />}</div> */}
+      <div className="hidden lg:block">{!user?.id && <QrScanner />}</div>
       <li>
         <a>About us</a>
       </li>
@@ -37,7 +36,7 @@ const Navbar = () => {
       <li>
         <a>Contact us</a>
       </li>
-      {/* {!user?.id && (
+      {!user?.id && (
         <li className="lg:hidden">
           {user?.id ? (
             <>
@@ -53,15 +52,15 @@ const Navbar = () => {
             </div>
           )}
         </li>
-      )} */}
+      )}
 
-      {/* {user?.id && (
+      {user?.id && (
         <li>
           <Link href={"/dashboard"}>Dashboard</Link>
         </li>
-      )} */}
+      )}
     </>
-);
+  );
 
   return (
     <div className="navbar bg-black shadow-sm text-white">
@@ -89,13 +88,15 @@ const Navbar = () => {
             {ulLInks}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl font-bold text-white">Virtual-callbell</a>
+        <a className="btn btn-ghost text-xl font-bold text-white">
+          Virtual-callbell
+        </a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 items-center">{ulLInks}</ul>
       </div>
       <div className="navbar-end">
-        {/* <div className="hidden lg:inline">
+        <div className="hidden lg:inline">
           {user?.id ? (
             <>
               <button onClick={logout} className="btn">
@@ -109,8 +110,8 @@ const Navbar = () => {
               </Link>
             </div>
           )}
-        </div> */}
-        {/* <div className="lg:hidden">
+        </div>
+        <div className="lg:hidden">
           {!user?.id ? (
             <QrScanner />
           ) : (
@@ -130,7 +131,7 @@ const Navbar = () => {
               )}
             </>
           )}
-        </div> */}
+        </div>
       </div>
     </div>
   );
