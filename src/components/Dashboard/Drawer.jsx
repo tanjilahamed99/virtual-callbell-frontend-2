@@ -4,7 +4,7 @@ import { useCall } from "../../Provider/Provider";
 import { Link, useLocation } from "react-router-dom";
 
 const Drawer = () => {
-  const pathname = useLocation();
+  const { pathname } = useLocation();
   const drawerRef = useRef(null);
   const { logout } = useCall();
 
@@ -55,7 +55,7 @@ const Drawer = () => {
                   className={`hover:bg-indigo-600 ${
                     pathname === link.href ? "bg-indigo-600" : ""
                   } px-3 py-2 rounded-lg cursor-pointer transition`}>
-                  <Link href={link.href} onClick={closeDrawer}>
+                  <Link to={link.href} onClick={closeDrawer}>
                     {link.label}
                   </Link>
                 </li>
