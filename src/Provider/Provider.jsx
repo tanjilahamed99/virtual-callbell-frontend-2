@@ -7,19 +7,82 @@ import {
   useEffect,
   useCallback,
 } from "react";
-import socket from "../utils/soket";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+import setAuthToken from "../config/setAuthToken";
+import { BASE_URL } from "../config/constant";
+import socket from "../utils/soket";
 
 const CallContext = createContext();
 
 export const Provider = ({ children }) => {
   const navigate = useNavigate();
+
+  // Global states
   const [incomingCall, setIncomingCall] = useState(null);
   const [user, setUser] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [token, setToken] = useState(null);
+
   console.log(user);
 
+  // ✅ INIT LOGIC (moved from your init.js)
+  useEffect(() => {
+    const init = async () => {
+      document.addEventListener("gesturestart", (e) => {
+        e.preventDefault();
+      });
+
+      // Version check
+      if (localStorage.getItem("app") !== "Virtual 2.x.x") {
+        localStorage.clear();
+        localStorage.setItem("app", "Virtual 2.x.x");
+      }
+
+      let token = localStorage.getItem("token");
+      let userString = localStorage.getItem("user");
+      let user = userString ? JSON.parse(userString) : null;
+
+      if (token) {
+        const decoded = jwtDecode(token, { complete: true });
+        const dateNow = new Date();
+        const isExpired = decoded.exp * 1000 < dateNow.getTime();
+
+        let result;
+        if (!isExpired) {
+          try {
+            const res = await axios.post(`${BASE_URL}/auth/check-user`, {
+              id: decoded.id,
+            });
+            result = res.data;
+          } catch (err) {
+            console.log(err);
+            result = null;
+          }
+        }
+
+        if (!result || result.error) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          token = null;
+          user = null;
+        }
+      }
+
+      if (token) {
+        setAuthToken(token);
+      }
+
+      // Push values into global state
+      setToken(token);
+      setUser(user);
+    };
+
+    init();
+  }, []);
+
+  // ✅ SOCKET HANDLING
   useEffect(() => {
     if (!socket || !user) return;
 
@@ -43,7 +106,6 @@ export const Provider = ({ children }) => {
     });
 
     socket.on("call-declined", () => {});
-
     socket.on("callCanceled", (data) => {
       if (data.success) {
         setModalOpen(false);
@@ -57,8 +119,9 @@ export const Provider = ({ children }) => {
       socket.off("call-declined");
       socket.off("callCanceled");
     };
-  }, [user, navigate, incomingCall]);
+  }, [user, navigate]);
 
+  // ✅ Helper functions
   const declineCall = useCallback(() => {
     if (!incomingCall) return;
     socket.emit("call-declined", { guestSocketId: incomingCall.from.socketId });
@@ -78,6 +141,7 @@ export const Provider = ({ children }) => {
     );
   }, [incomingCall, navigate, user]);
 
+  // ✅ Data available everywhere
   const data = {
     incomingCall,
     declineCall,
@@ -88,6 +152,7 @@ export const Provider = ({ children }) => {
     token,
     setToken,
   };
+
   return <CallContext.Provider value={data}>{children}</CallContext.Provider>;
 };
 

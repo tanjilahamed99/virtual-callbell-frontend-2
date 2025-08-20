@@ -105,7 +105,7 @@ const Navbar = () => {
             </>
           ) : (
             <div>
-              <Link href={"/login"} className="btn">
+              <Link to={"/login"} className="btn">
                 Login
               </Link>
             </div>
