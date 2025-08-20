@@ -6,6 +6,8 @@ import Profile from "./pages/Dashboard/Profile";
 import Subscriptions from "./pages/Dashboard/Subscriptions";
 import TransactionPage from "./pages/Dashboard/TransactionPage";
 import DashboardLayout from "./pages/Dashboard/DashboardLayout";
+import UserInfo from "./pages/UserInfo/UserInfo";
+import RoomPage from "./pages/Room/Room";
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<AuthForm />} />
+        <Route path="/userInfo" element={<UserInfo />} />
+        <Route path="/room" element={<RoomPage />} />
 
         {/* Dashboard with nested routes */}
         <Route path="/dashboard" element={<DashboardLayout />}>

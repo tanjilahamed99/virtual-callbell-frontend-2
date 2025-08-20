@@ -1,24 +1,24 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { useGlobal } from "reactn";
-import socket from "@/utils/soket";
 import Swal from "sweetalert2";
+import { useCall } from "../../Provider/Provider";
+import socket from "../../utils/soket";
+import { useNavigate } from "react-router-dom";
 
 export default function CallManager({
   userId,
   userName = "Virtual-callbell-user",
 }) {
   const [waitingCall, setWaitingCall] = useState(false);
-  const [user] = useGlobal("user");
-  const router = useRouter();
+  const {user} = useCall();
   const guestName = localStorage.getItem("guestName");
+  const navigate = useNavigate();
 
   useEffect(() => {
     socket.on("call-accepted", ({ roomName, peerSocketId }) => {
       setWaitingCall(false);
-      router.push(
+      navigate(
         `/room?roomName=${roomName}&username=${
           guestName || "Guest"
         }&peerSocketId=${peerSocketId}`
@@ -32,7 +32,7 @@ export default function CallManager({
         text: "Your call was declined",
       });
       setWaitingCall(false); // hide waiting modal
-      router.push("/");
+      navigate("/");
     });
 
     return () => {
@@ -40,7 +40,7 @@ export default function CallManager({
       socket.off("call-accepted");
       socket.off("call-declined");
     };
-  }, [guestName, user, router]);
+  }, [guestName, user, navigate]);
 
   const callRegisteredUser = useCallback(() => {
     if (!userId.trim()) return;
@@ -68,7 +68,7 @@ export default function CallManager({
         📞 Call {userName}
       </button>
       <button
-        onClick={() => router.back()}
+        onClick={() => navigate('/')}
         className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg shadow hover:bg-gray-300 w-[30%]">
         Back
       </button>

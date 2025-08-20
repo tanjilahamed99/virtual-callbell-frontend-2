@@ -1,7 +1,7 @@
 "use client";
 
-import { useCall } from "@/provider/SoketProvider";
 import { useEffect, useState, useRef } from "react";
+import { useCall } from "../../Provider/Provider";
 
 export default function CallPopup() {
   const { incomingCall, declineCall, acceptCall, modalOpen } = useCall();
