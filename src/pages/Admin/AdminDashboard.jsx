@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 const AdminDashboard = () => {
   const { user } = useCall();
-  console.log(user);
   const [dashboardData, setDashboardData] = useState({
     totalUsers: 0,
     totalSubscriptions: 0,

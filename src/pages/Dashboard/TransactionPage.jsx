@@ -7,7 +7,6 @@ const TransactionPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("All");
   const { user } = useCall();
-  console.log(transactions);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
