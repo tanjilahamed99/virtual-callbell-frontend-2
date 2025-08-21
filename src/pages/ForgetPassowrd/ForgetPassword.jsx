@@ -65,8 +65,8 @@ const ForgetPassword = () => {
         code,
         password,
       });
-      console.log(data);
       if (data.success) {
+        Swal.fire("Success", "Your password has been reset!", "success");
         setStep(1);
         setEmail("");
         setCode("");

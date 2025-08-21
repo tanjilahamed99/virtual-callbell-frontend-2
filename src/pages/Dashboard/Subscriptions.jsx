@@ -1,3 +1,7 @@
+import axios from "axios";
+import { BASE_URL } from "../../config/constant";
+import { useCall } from "../../Provider/Provider";
+
 const plans = [
   {
     _id: "32432424234",
@@ -41,9 +45,18 @@ const plans = [
 ];
 
 const Subscriptions = () => {
-  const Purchase = (id) => {
-    console.log(`Purchasing plan with ID: ${id}`);
+  const { user } = useCall();
+  const Purchase = async (id, price) => {
+    const { data } = await axios.post(`${BASE_URL}/paygic/getPage`, {
+      amount: price,
+      userId: user.id,
+    });
+    console.log(data);
+    if (data.success) {
+      // window.location.href = data.payPageUrl;
+    }
   };
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-2xl font-bold mb-6 text-black">Choose Your Plan</h1>
@@ -155,7 +168,7 @@ const Subscriptions = () => {
                 </ul>
                 <div className="flex justify-center pt-4">
                   <button
-                    onClick={() => Purchase(plan.id)}
+                    onClick={() => Purchase(plan._id, plan.price)}
                     className="h-16 w-full rounded-full border-2 border-sky-300 cursor-pointer font-black text-sky-800 duration-300 dark:text-[#6CC2FB]">
                     Purchases
                   </button>
