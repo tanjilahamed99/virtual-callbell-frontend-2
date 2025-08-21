@@ -1,5 +1,3 @@
-"use client";
-
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCall } from "../../Provider/Provider";
 import { ArrowLeft } from "lucide-react";

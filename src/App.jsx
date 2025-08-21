@@ -11,6 +11,8 @@ import RoomPage from "./pages/Room/Room";
 import ForgetPassword from "./pages/ForgetPassowrd/ForgetPassword";
 import Success from "./pages/Dashboard/Success";
 import Failed from "./pages/Dashboard/Failed";
+import AdminDashboardLayout from "./pages/Admin/AdminDashboardLayout";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 
 function App() {
   return (
@@ -30,6 +32,15 @@ function App() {
           <Route path="failed" element={<Failed />} />
           <Route path="subscriptions" element={<Subscriptions />} />
           <Route path="transactions" element={<TransactionPage />} />
+        </Route>
+
+        <Route path="/admin" element={<AdminDashboardLayout />}>
+          <Route index element={<AdminDashboard />} />
+          {/* <Route path="profile" element={<Profile />} />
+          <Route path="success" element={<Success />} />
+          <Route path="failed" element={<Failed />} />
+          <Route path="subscriptions" element={<Subscriptions />} />
+          <Route path="transactions" element={<TransactionPage />} /> */}
         </Route>
       </Routes>
     </div>

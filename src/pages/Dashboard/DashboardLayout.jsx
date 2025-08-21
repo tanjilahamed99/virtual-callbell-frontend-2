@@ -13,7 +13,14 @@ const DashboardLayout = () => {
         </div>
         {/* Mobile Navbar */}
         <div className="md:hidden">
-          <Drawer />
+          <Drawer
+            links={[
+              { href: "/dashboard", label: "Dashboard" },
+              { href: "/dashboard/profile", label: "Profile" },
+              { href: "/dashboard/subscriptions", label: "Subscriptions" },
+              { href: "/dashboard/transactions", label: "Transaction" },
+            ]}
+          />
         </div>
 
         {/* Main Page Content */}

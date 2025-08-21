@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { useCall } from "../../Provider/Provider";
 import { Link, useLocation } from "react-router-dom";
 
-const Drawer = () => {
+const Drawer = ({ links }) => {
   const { pathname } = useLocation();
   const drawerRef = useRef(null);
   const { logout } = useCall();
@@ -18,14 +18,6 @@ const Drawer = () => {
   const handleLogout = () => {
     logout();
   };
-
-  // Sidebar links
-  const links = [
-    { href: "/dashboard", label: "Dashboard" },
-    { href: "/dashboard/profile", label: "Profile" },
-    { href: "/dashboard/subscriptions", label: "Subscriptions" },
-    { href: "/dashboard/transactions", label: "Transaction" },
-  ];
 
   return (
     <div className="navbar bg-gray-300 shadow-sm">

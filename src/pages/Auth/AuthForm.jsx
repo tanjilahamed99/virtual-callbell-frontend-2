@@ -19,7 +19,6 @@ const AuthForm = () => {
   const [error, setError] = useState(null);
 
   const { setToken, setUser } = useCall();
-
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -77,44 +76,49 @@ const AuthForm = () => {
       />
 
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/60" />
+      <div className="absolute inset-0 bg-black/70" />
 
       {/* Form card */}
-      <div className="relative z-10 w-full max-w-sm rounded-2xl border bg-white/90 p-6 shadow-lg backdrop-blur-md dark:border-zinc-700 dark:bg-zinc-900/90 sm:p-8">
-        {/* Toggle tabs */}
-
-        <div className="mb-6 flex items-center justify-between rounded-2xl border border-gray-200 text-white p-2 shadow-sm">
+      <div className="relative z-10 w-full max-w-sm rounded-2xl border border-gray-700 bg-black p-6 shadow-lg backdrop-blur-md sm:p-8">
+        {/* Scan Section */}
+        <div className="mb-6 flex items-center justify-between rounded-xl border border-gray-600 p-2">
           <h2 className="text-lg font-semibold text-white tracking-tight">
             Scan for Call
           </h2>
-          <div className="flex items-center justify-center rounded-xl border border-gray-300  p-2  transition">
+          <div className="flex items-center justify-center rounded-lg border border-gray-600 p-2">
             <QrScanner />
           </div>
         </div>
 
-        <div className="flex border-b dark:border-zinc-700">
+        {/* Toggle Tabs */}
+        <div className="flex border-b border-gray-700 text-white">
           <button
             className={`flex-1 p-3 text-center font-semibold uppercase transition ${
               !signUp
-                ? "bg-zinc-800 text-white dark:bg-zinc-600"
-                : "hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                ? "bg-gray-800 text-white"
+                : "hover:bg-gray-700 hover:text-white"
             }`}
-            onClick={() => setSignUp(false)}>
+            onClick={() => setSignUp(false)}
+          >
             Sign In
           </button>
           <button
             className={`flex-1 p-3 text-center font-semibold uppercase transition ${
               signUp
-                ? "bg-zinc-800 text-white dark:bg-zinc-600"
-                : "hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                ? "bg-gray-800 text-white"
+                : "hover:bg-gray-700 hover:text-white"
             }`}
-            onClick={() => setSignUp(true)}>
+            onClick={() => setSignUp(true)}
+          >
             Sign Up
           </button>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 pt-6">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 pt-6 text-white"
+        >
           <h1 className="text-center text-xl font-bold uppercase tracking-wide">
             {signUp ? "Create Account" : "Welcome Back"}
           </h1>
@@ -127,7 +131,7 @@ const AuthForm = () => {
               type="text"
               placeholder="Full Name"
               required
-              className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-zinc-700 dark:border-zinc-700 dark:bg-zinc-800"
+              className="w-full rounded-md border border-gray-600 bg-black px-3 py-2 text-white placeholder-gray-400 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             />
           )}
 
@@ -138,7 +142,7 @@ const AuthForm = () => {
             type="email"
             placeholder="Email"
             required
-            className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-zinc-700 dark:border-zinc-700 dark:bg-zinc-800"
+            className="w-full rounded-md border border-gray-600 bg-black px-3 py-2 text-white placeholder-gray-400 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
           />
 
           <input
@@ -148,11 +152,11 @@ const AuthForm = () => {
             type="password"
             placeholder="Password"
             required
-            className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-zinc-700 dark:border-zinc-700 dark:bg-zinc-800"
+            className="w-full rounded-md border border-gray-600 bg-black px-3 py-2 text-white placeholder-gray-400 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
           />
 
           {!signUp && (
-            <p className="text-right text-sm text-zinc-600 dark:text-zinc-400">
+            <p className="text-right text-sm text-gray-400">
               <Link to="/forget-password" className="hover:underline">
                 Forgot password?
               </Link>
@@ -168,16 +172,18 @@ const AuthForm = () => {
           <button
             type="submit"
             disabled={loading}
-            className="rounded-md border px-5 py-2 font-semibold uppercase shadow-md transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-zinc-700 dark:hover:bg-zinc-700 dark:hover:text-white">
+            className="rounded-md border border-gray-600 bg-white px-5 py-2 font-semibold uppercase text-black shadow-md transition hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-70"
+          >
             {loading ? "Processing..." : "Submit"}
           </button>
 
-          <p className="text-center text-sm">
+          <p className="text-center text-sm text-gray-300">
             {signUp ? "Already have an account?" : "Don’t have an account?"}{" "}
             <button
               type="button"
               onClick={() => setSignUp(!signUp)}
-              className="font-semibold underline">
+              className="font-semibold underline"
+            >
               {signUp ? "Sign In" : "Sign Up"}
             </button>
           </p>

@@ -80,7 +80,7 @@ const Dashboard = () => {
             </p>
             <p>
               <span className="font-medium">Ends on:</span>{" "}
-              {myInfo?.subscription?.endDate.slice(0,10)}
+              {myInfo?.subscription?.endDate?.slice(0,10)}
             </p>
           </div>
         </div>
