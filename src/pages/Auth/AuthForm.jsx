@@ -6,6 +6,7 @@ import register from "../../hooks/auth/regsiter";
 import setAuthToken from "../../config/setAuthToken";
 import { Link, useNavigate } from "react-router-dom";
 import login from "../../hooks/auth/login";
+import QrScanner from "../../components/Dashboard/QrScaner";
 
 const AuthForm = () => {
   const [signUp, setSignUp] = useState(false);
@@ -81,6 +82,16 @@ const AuthForm = () => {
       {/* Form card */}
       <div className="relative z-10 w-full max-w-sm rounded-2xl border bg-white/90 p-6 shadow-lg backdrop-blur-md dark:border-zinc-700 dark:bg-zinc-900/90 sm:p-8">
         {/* Toggle tabs */}
+
+        <div className="mb-6 flex items-center justify-between rounded-2xl border border-gray-200 text-white p-2 shadow-sm">
+          <h2 className="text-lg font-semibold text-white tracking-tight">
+            Scan for Call
+          </h2>
+          <div className="flex items-center justify-center rounded-xl border border-gray-300  p-2  transition">
+            <QrScanner />
+          </div>
+        </div>
+
         <div className="flex border-b dark:border-zinc-700">
           <button
             className={`flex-1 p-3 text-center font-semibold uppercase transition ${
@@ -142,7 +153,7 @@ const AuthForm = () => {
 
           {!signUp && (
             <p className="text-right text-sm text-zinc-600 dark:text-zinc-400">
-              <Link href="/forget-password" className="hover:underline">
+              <Link to="/forget-password" className="hover:underline">
                 Forgot password?
               </Link>
             </p>

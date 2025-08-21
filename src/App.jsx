@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import AuthForm from "./pages/Auth/AuthForm";
 import Dashboard from "./pages/Dashboard/Dashboard";
@@ -8,6 +8,7 @@ import TransactionPage from "./pages/Dashboard/TransactionPage";
 import DashboardLayout from "./pages/Dashboard/DashboardLayout";
 import UserInfo from "./pages/UserInfo/UserInfo";
 import RoomPage from "./pages/Room/Room";
+import ForgetPassword from "./pages/ForgetPassowrd/ForgetPassword";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<AuthForm />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/userInfo" element={<UserInfo />} />
         <Route path="/room" element={<RoomPage />} />
 

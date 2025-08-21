@@ -29,7 +29,6 @@ const Home = () => {
           experience.
         </p>
         <div className="mt-8">
-          {/* <GuestModal /> */}
         </div>
       </section>
 

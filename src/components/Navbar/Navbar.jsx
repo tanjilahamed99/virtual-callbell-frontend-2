@@ -5,25 +5,16 @@ import { useCall } from "../../Provider/Provider";
 import QrScanner from "../Dashboard/QrScaner";
 
 const Navbar = () => {
-  const { user, setUser, setToken } = useCall();
+  const { user, logout } = useCall();
   const navigate = useNavigate();
 
-  const logout = async () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setToken(null);
-    setUser({});
-    Swal.fire({
-      title: "Successful",
-      text: "You have logged out!",
-      icon: "success",
-    });
+  const handleLogout = async () => {
+    logout();
     navigate("/");
   };
 
   const ulLInks = (
     <>
-      <div className="hidden lg:block">{!user?.id && <QrScanner />}</div>
       <li>
         <a>About us</a>
       </li>
@@ -40,7 +31,7 @@ const Navbar = () => {
         <li className="lg:hidden">
           {user?.id ? (
             <>
-              <button onClick={logout} className="btn">
+              <button onClick={handleLogout} className="btn">
                 Logout
               </button>
             </>
@@ -112,25 +103,21 @@ const Navbar = () => {
           )}
         </div>
         <div className="lg:hidden">
-          {!user?.id ? (
-            <QrScanner />
-          ) : (
-            <>
-              {user?.id ? (
-                <>
-                  <button onClick={logout} className="btn">
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <div>
-                  <Link href={"/login"} className="btn">
-                    Login
-                  </Link>
-                </div>
-              )}
-            </>
-          )}
+          <>
+            {user?.id ? (
+              <>
+                <button onClick={logout} className="btn">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <div>
+                <Link href={"/login"} className="btn">
+                  Login
+                </Link>
+              </div>
+            )}
+          </>
         </div>
       </div>
     </div>
