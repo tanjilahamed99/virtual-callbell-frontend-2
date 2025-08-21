@@ -1,8 +1,7 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import getWebsiteData from "../../hooks/admin/getWebisteData";
 import { useCall } from "../../Provider/Provider";
-import deleteSub from "../../hooks/admin/deleteSub";
 import addNewWebsiteData from "../../hooks/admin/addNewSub";
 
 const AdminSubscription = () => {
@@ -82,7 +81,6 @@ const AdminSubscription = () => {
 
   // Handle Delete Subscription
   const handleDelete = async (id) => {
-    console.log(id);
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "This will permanently delete the subscription!",
@@ -98,9 +96,7 @@ const AdminSubscription = () => {
         const update = {
           plan: subscriptions.filter((s) => s._id !== id),
         };
-        console.log(update);
         const { data } = await addNewWebsiteData(user.id, user.email, update);
-        console.log(data);
         if (data.success) {
           setSubscriptions(subscriptions.filter((s) => s._id !== id));
           Swal.fire("Deleted!", "Subscription deleted.", "success");
