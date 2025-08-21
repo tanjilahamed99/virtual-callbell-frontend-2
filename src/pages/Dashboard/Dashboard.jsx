@@ -6,8 +6,6 @@ const Dashboard = () => {
   const { user } = useCall();
   const [myInfo, setMyInfo] = useState(null);
 
-  console.log(myInfo);
-
   const getRemainingDays = (endDate) => {
     const today = new Date();
     const end = new Date(endDate);

@@ -11,8 +11,6 @@ const Profile = () => {
   const fileInputRef = useRef(null);
   const [myInfo, setMyInfo] = useState(null);
   const { user } = useCall();
-
-  console.log(myInfo);
   // initials
   const initials = myInfo?.name
     .split(" ")

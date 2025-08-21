@@ -25,6 +25,7 @@ export const Provider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   console.log(user);
 
@@ -44,6 +45,7 @@ export const Provider = ({ children }) => {
   // ✅ INIT LOGIC (moved from your init.js)
   useEffect(() => {
     const init = async () => {
+      setLoading(true);
       document.addEventListener("gesturestart", (e) => {
         e.preventDefault();
       });
@@ -91,6 +93,7 @@ export const Provider = ({ children }) => {
       // Push values into global state
       setToken(token);
       setUser(user);
+      setLoading(false);
     };
 
     init();
@@ -165,7 +168,8 @@ export const Provider = ({ children }) => {
     setUser,
     token,
     setToken,
-    logout
+    logout,
+    loading,
   };
 
   return <CallContext.Provider value={data}>{children}</CallContext.Provider>;
