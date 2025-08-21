@@ -1,42 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useCall } from "../../Provider/Provider";
+import myData from "../../hooks/users/myData";
 
 // Sample transaction data (replace with API data)
-const sampleTransactions = [
-  {
-    id: "TXN001",
-    amount: 50,
-    type: "Credit",
-    date: "2025-08-01",
-    description: "Purchase",
-  },
-  {
-    id: "TXN002",
-    amount: 20,
-    type: "Debit",
-    date: "2025-08-05",
-    description: "Purchase",
-  },
-  {
-    id: "TXN003",
-    amount: 100,
-    type: "Credit",
-    date: "2025-08-10",
-    description: "Purchase",
-  },
-  {
-    id: "TXN004",
-    amount: 75,
-    type: "Debit",
-    date: "2025-08-12",
-    description: "Purchase",
-  },
-];
 
 const TransactionPage = () => {
-  const [transactions, setTransactions] = useState(sampleTransactions);
+  const [transactions, setTransactions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("All");
-  console.log(setTransactions);
+  const { user } = useCall();
+  console.log(transactions);
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -45,16 +19,31 @@ const TransactionPage = () => {
     setFilterType(e.target.value);
   };
 
-  const filteredTransactions = transactions.filter((txn) => {
+  const filteredTransactions = transactions?.filter((txn) => {
     const matchesSearch =
-      txn.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      txn.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      txn.amount.toString().includes(searchTerm);
+      txn?._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      txn?.plan.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      txn?.amount.toString().includes(searchTerm) ||
+      txn?.createdAt.toString().includes(searchTerm) ||
+      txn?.paymentMethod.toString().includes(searchTerm);
 
-    const matchesType = filterType === "All" ? true : txn.type === filterType;
+    const matchesType = filterType === "All" ? true : txn.status === filterType;
 
     return matchesSearch && matchesType;
   });
+
+  useEffect(() => {
+    if (user) {
+      const fetch = async () => {
+        const { data } = await myData({ id: user.id });
+        if (data.success) {
+          setTransactions(data?.data?.transactionHistory);
+        }
+      };
+      fetch();
+    }
+  }, [user]);
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-2xl font-bold mb-4 text-black">My Transactions</h1>
@@ -73,8 +62,8 @@ const TransactionPage = () => {
           onChange={handleFilter}
           className="border rounded px-4 py-2 w-full md:w-1/4 border-black text-black">
           <option value="All">All Transactions</option>
-          <option value="Credit">Credit</option>
-          <option value="Debit">Debit</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancel">Cancel</option>
         </select>
       </div>
 
@@ -90,32 +79,46 @@ const TransactionPage = () => {
                 Date
               </th>
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                Type
+                Plan
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                Duration
               </th>
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
                 Amount
               </th>
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                Description
+                Payment Method
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                Status
               </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {filteredTransactions.length > 0 ? (
-              filteredTransactions.map((txn) => (
-                <tr key={txn.id}>
-                  <td className="px-6 py-4 text-sm text-gray-800">{txn.id}</td>
+            {filteredTransactions?.length > 0 ? (
+              filteredTransactions?.map((txn) => (
+                <tr key={txn._id}>
                   <td className="px-6 py-4 text-sm text-gray-800">
-                    {txn.date}
+                    {txn._id.slice(-5)}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-800">
-                    {txn.type}
+                    {txn.createdAt.slice(0, 10)}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-800">
-                    ${txn.amount}
+                    {txn.plan}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-800">
-                    {txn.description}
+                    {txn.planDuration}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-800">
+                    ₹{txn.amount}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-800">
+                    {txn.paymentMethod}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-800">
+                    {txn.status}
                   </td>
                 </tr>
               ))
