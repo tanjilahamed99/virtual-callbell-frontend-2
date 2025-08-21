@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCall } from "../../Provider/Provider";
 import getAllUsers from "../../hooks/admin/getAllUsers";
+import { Link } from "react-router-dom";
 
 const AdminDashboard = () => {
   const { user } = useCall();
@@ -110,6 +111,13 @@ const AdminDashboard = () => {
                 </td>
               </tr>
             )}
+            <td colSpan={6} className="px-3 py-4 text-center">
+              <Link
+                to="/admin/transactions"
+                className="px-3 py-4 text-center text-indigo-600 hover:underline mt-5">
+                View All Transactions
+              </Link>
+            </td>
           </tbody>
         </table>
       </div>
