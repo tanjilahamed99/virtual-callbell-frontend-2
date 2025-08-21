@@ -13,6 +13,9 @@ import Success from "./pages/Dashboard/Success";
 import Failed from "./pages/Dashboard/Failed";
 import AdminDashboardLayout from "./pages/Admin/AdminDashboardLayout";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
+import AllUsers from "./pages/Admin/AllUsers";
+import AdminSubscription from "./pages/Admin/Subscription";
+import AdminTransaction from "./pages/Admin/Transaction";
 
 function App() {
   return (
@@ -36,11 +39,9 @@ function App() {
 
         <Route path="/admin" element={<AdminDashboardLayout />}>
           <Route index element={<AdminDashboard />} />
-          {/* <Route path="profile" element={<Profile />} />
-          <Route path="success" element={<Success />} />
-          <Route path="failed" element={<Failed />} />
-          <Route path="subscriptions" element={<Subscriptions />} />
-          <Route path="transactions" element={<TransactionPage />} /> */}
+          <Route path="users" element={<AllUsers />} />
+          <Route path="subscriptions" element={<AdminSubscription />} />
+          <Route path="transactions" element={<AdminTransaction />} />
         </Route>
       </Routes>
     </div>
