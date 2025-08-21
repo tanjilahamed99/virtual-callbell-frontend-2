@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useCall } from "../../Provider/Provider";
-import myData from "../../hooks/users/myData";
+import getAllUsers from "../../hooks/admin/getAllUsers";
 
 const AdminDashboard = () => {
   const { user } = useCall();
+  console.log(user);
   const [dashboardData, setDashboardData] = useState({
     totalUsers: 0,
     totalSubscriptions: 0,
@@ -14,14 +15,16 @@ const AdminDashboard = () => {
   useEffect(() => {
     if (user) {
       const fetch = async () => {
-        // Ideally you'd have a dedicated API for admin stats
-        const { data } = await myData({ id: user.id, role: "admin" });
-        if (data.success) {
+        const { data: userData } = await getAllUsers(user.id, user.email);
+        console.log(userData);
+        if (userData.success) {
+          const allTransactions = userData.users
+            .flatMap((u) => u.transactionHistory || [])
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           setDashboardData({
-            totalUsers: data.usersCount,
-            totalSubscriptions: data.subscriptionsCount,
-            totalTransactions: data.transactionsCount,
-            latestTransactions: data.latestTransactions || [],
+            totalUsers: userData.users?.length,
+            totalTransactions: allTransactions.length,
+            latestTransactions: allTransactions.slice(0, 10),
           });
         }
       };
@@ -83,13 +86,11 @@ const AdminDashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {dashboardData.latestTransactions.map((tran, idx) => (
+            {dashboardData?.latestTransactions?.map((tran, idx) => (
               <tr key={idx} className="border-b border-gray-200">
                 <td className="px-3 py-2">{idx + 1}</td>
-                <td className="px-3 py-2">{tran.userName}</td>
-                <td className="px-3 py-2">
-                  {tran.createdAt?.slice(0, 10)}
-                </td>
+                <td className="px-3 py-2">{tran.author.name}</td>
+                <td className="px-3 py-2">{tran.createdAt?.slice(0, 10)}</td>
                 <td className="px-3 py-2">{tran.plan}</td>
                 <td className="px-3 py-2">₹{tran.amount}</td>
                 <td
@@ -97,18 +98,14 @@ const AdminDashboard = () => {
                     tran.status === "Completed"
                       ? "text-green-600"
                       : "text-red-600"
-                  }`}
-                >
+                  }`}>
                   {tran.status}
                 </td>
               </tr>
             ))}
-            {dashboardData.latestTransactions.length === 0 && (
+            {dashboardData?.latestTransactions?.length === 0 && (
               <tr>
-                <td
-                  colSpan={6}
-                  className="px-3 py-4 text-center text-gray-500"
-                >
+                <td colSpan={6} className="px-3 py-4 text-center text-gray-500">
                   No transactions found
                 </td>
               </tr>
