@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useCall } from "../../Provider/Provider";
 import myData from "../../hooks/users/myData";
 
-// Sample transaction data (replace with API data)
-
 const TransactionPage = () => {
   const [transactions, setTransactions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");

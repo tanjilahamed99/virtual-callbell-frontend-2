@@ -4,6 +4,7 @@ import { useCall } from "../../Provider/Provider";
 import updateUser from "../../hooks/users/updateUser";
 import myData from "../../hooks/users/myData";
 import QrCode from "../../components/Dashboard/QrCode";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -11,6 +12,7 @@ const Profile = () => {
   const [myInfo, setMyInfo] = useState(null);
   const { user } = useCall();
 
+  console.log(myInfo);
   // initials
   const initials = myInfo?.name
     .split(" ")
@@ -28,7 +30,7 @@ const Profile = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-//       const imageUrl = URL.createObjectURL(file);
+      //       const imageUrl = URL.createObjectURL(file);
       // setUser((prev) => ({ ...prev, image: imageUrl }));
     }
   };
@@ -51,6 +53,14 @@ const Profile = () => {
         icon: "success",
       });
     }
+  };
+
+  const getRemainingDays = (endDate) => {
+    const today = new Date();
+    const end = new Date(endDate);
+    const diffTime = end - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 0;
   };
 
   useEffect(() => {
@@ -183,7 +193,19 @@ const Profile = () => {
             </>
           )}
         </div>
-        <QrCode user={user} />
+
+        {getRemainingDays(myInfo?.subscription?.endDate) > 1 ? (
+          <QrCode user={user} />
+        ) : (
+          <div className="my-10 text-black font-semibold">
+            Please renew your subscription to get QR code for call gest direct. {' '}
+            <Link
+              to={"/dashboard/subscriptions"}
+              className="text-blue-600 hover:underline">
+              Renew Now
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* qr code for call gest direct */}
