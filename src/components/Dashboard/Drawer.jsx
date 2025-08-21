@@ -53,7 +53,7 @@ const Drawer = () => {
                 <li
                   key={link.href}
                   className={`hover:bg-indigo-600 ${
-                    pathname === link.href ? "bg-indigo-600" : ""
+                    pathname === link.href ? "bg-indigo-600 text-white" : ""
                   } px-3 py-2 rounded-lg cursor-pointer transition`}>
                   <Link to={link.href} onClick={closeDrawer}>
                     {link.label}
