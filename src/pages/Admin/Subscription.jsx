@@ -16,7 +16,6 @@ const AdminSubscription = () => {
 
   const filteredSubscriptions = subscriptions?.filter((txn) => {
     const matchesSearch =
-      txn?._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       txn?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       txn?.duration.toString().includes(searchTerm) ||
       txn?.minute.toString().includes(searchTerm) ||
@@ -194,7 +193,7 @@ const AdminSubscription = () => {
             <tbody className="divide-y divide-gray-200">
               {filteredSubscriptions?.length > 0 ? (
                 filteredSubscriptions?.map((txn, idx) => (
-                  <tr key={txn._id}>
+                  <tr key={idx}>
                     <td className="px-6 py-4 text-sm text-gray-800">
                       {idx + 1}
                     </td>

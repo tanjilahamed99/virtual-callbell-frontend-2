@@ -18,7 +18,6 @@ const AdminDashboard = () => {
     if (user) {
       const fetch = async () => {
         const { data: userData } = await getAllUsers(user.id, user.email);
-        console.log(userData);
         if (userData.success) {
           const allTransactions = userData.users
             .flatMap((u) => u.transactionHistory || [])
