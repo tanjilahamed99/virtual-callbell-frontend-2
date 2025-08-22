@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useCall } from "../../Provider/Provider";
 import getAllUsers from "../../hooks/admin/getAllUsers";
 import { Link } from "react-router-dom";
+import getWebsiteData from "../../hooks/admin/getWebisteData";
 
 const AdminDashboard = () => {
   const { user } = useCall();
@@ -11,6 +12,7 @@ const AdminDashboard = () => {
     totalTransactions: 0,
     latestTransactions: [],
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user) {
@@ -21,16 +23,45 @@ const AdminDashboard = () => {
           const allTransactions = userData.users
             .flatMap((u) => u.transactionHistory || [])
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-          setDashboardData({
+          setDashboardData((prev) => ({
+            ...prev,
             totalUsers: userData.users?.length,
             totalTransactions: allTransactions.length,
             latestTransactions: allTransactions.slice(0, 10),
-          });
+          }));
         }
       };
       fetch();
     }
   }, [user]);
+
+  // Fetch subscriptions
+  useEffect(() => {
+    const fetchSubs = async () => {
+      try {
+        const { data } = await getWebsiteData();
+        if (data.success) {
+          setDashboardData((prev) => ({
+            ...prev,
+            totalSubscriptions: data.data.plan.length,
+          }));
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSubs();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-10 flex flex-col gap-10">

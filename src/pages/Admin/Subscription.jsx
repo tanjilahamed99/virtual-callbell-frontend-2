@@ -16,7 +16,6 @@ const AdminSubscription = () => {
     const fetchSubs = async () => {
       try {
         const { data } = await getWebsiteData();
-        console.log(data);
         if (data.success) {
           setSubscriptions(data.data.plan || []);
         }
