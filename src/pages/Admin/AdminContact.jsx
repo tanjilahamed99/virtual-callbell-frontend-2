@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from "react";
-import getWebsiteData from "../../hooks/admin/getWebisteData";
+import axios from "axios";
+import { BASE_URL } from "../../config/constant";
+import { useCall } from "../../Provider/Provider";
 
 const AdminContact = () => {
   const [contactList, setContactList] = useState([]);
+  const { user } = useCall();
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        const { data } = await getWebsiteData();
-        setContactList(data?.data?.contact || []);
+        const { data } = await axios.get(
+          BASE_URL + `/admin/contacts/${user.id}/${user.email}`
+        );
+        console.log(data);
+        setContactList(data?.data || []);
       } catch (err) {
         console.error("Error fetching contact info:", err);
       }
     };
-    fetch();
-  }, []);
+    if (user) {
+      fetch();
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">

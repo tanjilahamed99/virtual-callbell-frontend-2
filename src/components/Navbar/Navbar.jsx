@@ -16,16 +16,16 @@ const Navbar = () => {
   const ulLInks = (
     <>
       <li>
-        <a>About us</a>
+        <Link to={"/about"}>About us</Link>
       </li>
       <li>
-        <a>Privacy Policy</a>
+        <Link to={"/privacy"}>Privacy Policy</Link>
       </li>
       <li>
-        <a>Terms of use</a>
+        <Link to={"/terms"}>Terms of use</Link>
       </li>
       <li>
-        <a>Contact us</a>
+        <Link to={"/contact"}>Contact us</Link>
       </li>
       {!user?.id && (
         <li className="lg:hidden">

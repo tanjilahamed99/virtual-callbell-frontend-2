@@ -21,6 +21,10 @@ import AdminAbout from "./pages/Admin/AdminAbout";
 import AdminContact from "./pages/Admin/AdminContact";
 import AdminTerms from "./pages/Admin/AdminTerms";
 import AdminPrivacy from "./pages/Admin/AdminPrivacy";
+import About from "./pages/About/About";
+import Contact from "./pages/Contact/Contact";
+import Terms from "./pages/Terms/Terms";
+import Privacy from "./pages/Privacy/Privacy";
 
 function App() {
   return (
@@ -31,6 +35,10 @@ function App() {
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/userInfo" element={<UserInfo />} />
         <Route path="/room" element={<RoomPage />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
 
         {/* Dashboard with nested routes */}
         <Route path="/dashboard" element={<DashboardLayout />}>

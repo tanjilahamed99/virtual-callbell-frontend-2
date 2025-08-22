@@ -1,4 +1,3 @@
-import React from "react";
 import { useCall } from "../../Provider/Provider";
 import { Navigate } from "react-router-dom";
 
