@@ -17,6 +17,10 @@ import AllUsers from "./pages/Admin/AllUsers";
 import AdminSubscription from "./pages/Admin/Subscription";
 import AdminTransaction from "./pages/Admin/Transaction";
 import Settings from "./pages/Admin/Settings";
+import AdminAbout from "./pages/Admin/AdminAbout";
+import AdminContact from "./pages/Admin/AdminContact";
+import AdminTerms from "./pages/Admin/AdminTerms";
+import AdminPrivacy from "./pages/Admin/AdminPrivacy";
 
 function App() {
   return (
@@ -44,6 +48,10 @@ function App() {
           <Route path="subscriptions" element={<AdminSubscription />} />
           <Route path="transactions" element={<AdminTransaction />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="about" element={<AdminAbout />} />
+          <Route path="contact" element={<AdminContact />} />
+          <Route path="terms" element={<AdminTerms />} />
+          <Route path="privacy" element={<AdminPrivacy />} />
         </Route>
       </Routes>
     </div>
