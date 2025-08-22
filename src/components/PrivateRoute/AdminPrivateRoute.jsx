@@ -17,7 +17,7 @@ const AdminPrivateRoute = ({ children }) => {
     return <Navigate to="/" replace />;
   }
 
-  if (user.rule !== "admin") {
+  if (!loading && user.role !== "admin") {
     return <Navigate to="/" replace />;
   }
 
