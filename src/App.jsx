@@ -16,6 +16,7 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AllUsers from "./pages/Admin/AllUsers";
 import AdminSubscription from "./pages/Admin/Subscription";
 import AdminTransaction from "./pages/Admin/Transaction";
+import Settings from "./pages/Admin/Settings";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="users" element={<AllUsers />} />
           <Route path="subscriptions" element={<AdminSubscription />} />
           <Route path="transactions" element={<AdminTransaction />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
     </div>
