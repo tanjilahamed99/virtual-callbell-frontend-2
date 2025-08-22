@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import getWebsiteData from "../../hooks/admin/getWebisteData";
 
 const AdminContact = () => {
-          const [contactList, setContactList] = useState([]);
-          
+  const [contactList, setContactList] = useState([]);
+
   useEffect(() => {
     const fetch = async () => {
       try {
