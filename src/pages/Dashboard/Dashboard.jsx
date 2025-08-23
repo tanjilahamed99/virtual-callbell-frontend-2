@@ -75,6 +75,10 @@ const Dashboard = () => {
               {myInfo?.subscription?.plan}
             </p>
             <p>
+              <span className="font-medium">Remaining Minutes:</span>{" "}
+              {myInfo?.subscription?.minute} Minutes
+            </p>
+            <p>
               <span className="font-medium">Remaining Days:</span>{" "}
               {getRemainingDays(myInfo?.subscription?.endDate)} days
             </p>
