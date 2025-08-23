@@ -5,13 +5,14 @@ import Swal from "sweetalert2";
 import { useCall } from "../../Provider/Provider";
 import socket from "../../utils/soket";
 import { useNavigate } from "react-router-dom";
+import CallRequest from "./CallRequest";
 
 export default function CallManager({
   userId,
   userName = "Virtual-callbell-user",
 }) {
   const [waitingCall, setWaitingCall] = useState(false);
-  const {user} = useCall();
+  const { user } = useCall();
   const guestName = localStorage.getItem("guestName");
   const navigate = useNavigate();
 
@@ -68,25 +69,18 @@ export default function CallManager({
         📞 Call {userName}
       </button>
       <button
-        onClick={() => navigate('/')}
+        onClick={() => navigate("/")}
         className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg shadow hover:bg-gray-300 w-[30%]">
         Back
       </button>
 
       {/* Waiting Modal */}
       {waitingCall && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-sm text-center">
-            <p className="text-lg font-semibold mb-4 text-black">
-              📞 Calling {userName}… Waiting for them to pick up
-            </p>
-            <button
-              onClick={handleCloseCall}
-              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
-              Cancel Call
-            </button>
-          </div>
-        </div>
+        <CallRequest
+          handleCloseCall={handleCloseCall}
+          userName={userName}
+          waitingCall={waitingCall}
+        />
       )}
     </div>
   );

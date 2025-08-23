@@ -27,7 +27,9 @@ export default function CallPopup() {
 
     // Play audio if modal is open
     if (modalOpen) {
-      audioRef.current.play().catch((err) => console.log("Autoplay prevented:", err));
+      audioRef.current
+        .play()
+        .catch((err) => console.log("Autoplay prevented:", err));
     } else {
       // Stop audio when modal closes
       audioRef.current.pause();
@@ -51,23 +53,12 @@ export default function CallPopup() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="relative bg-white w-80 rounded-3xl shadow-2xl flex flex-col items-center p-6">
             {/* Pulsing ring effect */}
-            <div className="relative mb-4">
+            {/* Pulsing avatar */}
+            <div className="relative mb-6">
               <div className="absolute inset-0 rounded-full bg-green-400 opacity-30 animate-ping"></div>
               <div className="absolute inset-0 rounded-full bg-green-400 opacity-20 animate-ping delay-200"></div>
-              <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center z-10">
-                <svg
-                  className="w-10 h-10 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 10l4.553-4.553a2 2 0 012.828 0l.172.172a2 2 0 010 2.828L18 12m0 0l4.553 4.553a2 2 0 010 2.828l-.172.172a2 2 0 01-2.828 0L15 14m3-2H9"
-                  />
-                </svg>
+              <div className="w-28 h-28 bg-green-500 rounded-full flex items-center justify-center z-10 text-white text-3xl font-bold">
+                {incomingCall?.from?.name?.charAt(0).toUpperCase()}
               </div>
             </div>
 

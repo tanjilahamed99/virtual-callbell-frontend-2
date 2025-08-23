@@ -14,6 +14,7 @@ import setAuthToken from "../config/setAuthToken";
 import { BASE_URL } from "../config/constant";
 import socket from "../utils/soket";
 import Swal from "sweetalert2";
+import myData from "../hooks/users/myData";
 
 const CallContext = createContext();
 
@@ -26,8 +27,9 @@ export const Provider = ({ children }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [myInfo, setMyInfo] = useState(null);
 
-  console.log(user);
+  console.log(myInfo);
 
   const logout = async () => {
     localStorage.removeItem("token");
@@ -138,6 +140,18 @@ export const Provider = ({ children }) => {
     };
   }, [user, navigate]);
 
+  useEffect(() => {
+    if (user?.id) {
+      const fetch = async () => {
+        const { data } = await myData({ id: user?.id });
+        if (data.success) {
+          setMyInfo(data.data);
+        }
+      };
+      fetch();
+    }
+  }, [token, user]);
+
   // ✅ Helper functions
   const declineCall = useCallback(() => {
     if (!incomingCall) return;
@@ -146,8 +160,29 @@ export const Provider = ({ children }) => {
     setIncomingCall(null);
   }, [incomingCall]);
 
+  const getRemainingDays = (endDate) => {
+    const today = new Date();
+    const end = new Date(endDate);
+    const diffTime = end - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 0;
+  };
+
   const acceptCall = useCallback(() => {
     if (!incomingCall) return;
+
+    if (
+      myInfo?.subscription?.minute <= 0 ||
+      getRemainingDays(myInfo?.subscription?.endDate) <= 0
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Plan expired or minutes exhausted",
+      });
+      return;
+    }
+
     socket.emit("call-accepted", {
       roomName: incomingCall.roomName,
       guestSocketId: incomingCall.from.socketId,
@@ -156,7 +191,7 @@ export const Provider = ({ children }) => {
     navigate(
       `/room?roomName=${incomingCall.roomName}&username=${user.name}&peerSocketId=${incomingCall.from.socketId}`
     );
-  }, [incomingCall, navigate, user]);
+  }, [incomingCall, navigate, user, myInfo]);
 
   // ✅ Data available everywhere
   const data = {
