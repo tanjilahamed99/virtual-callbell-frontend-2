@@ -16,6 +16,7 @@ const AdminDashboardLayout = () => {
           <Drawer
             links={[
               { href: "/admin", label: "Dashboard" },
+              { href: "/", label: "Home" },
               { href: "/admin/users", label: "All Users" },
               { href: "/admin/subscriptions", label: "All Subscriptions" },
               { href: "/admin/transactions", label: "All Transactions" },

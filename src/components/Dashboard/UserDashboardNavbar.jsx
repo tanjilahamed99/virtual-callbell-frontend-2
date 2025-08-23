@@ -25,6 +25,12 @@ const UserDashboardNavLinks = () => {
       </li>
       <li
         className={`hover:bg-indigo-600 ${
+          pathname === "/" ? "bg-indigo-600" : ""
+        } px-3 py-2 rounded-lg cursor-pointer transition `}>
+        <Link to={"/"}>Home</Link>
+      </li>
+      <li
+        className={`hover:bg-indigo-600 ${
           pathname === "/dashboard/profile" ? "bg-indigo-600" : ""
         } px-3 py-2 rounded-lg cursor-pointer transition `}>
         <Link to={"/dashboard/profile"}>Profile</Link>

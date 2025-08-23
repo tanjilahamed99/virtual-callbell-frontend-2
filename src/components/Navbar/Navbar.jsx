@@ -30,24 +30,6 @@ const Navbar = () => {
       <li>
         <Link to={"/contact"}>Contact us</Link>
       </li>
-      {!user?.id && (
-        <li className="lg:hidden">
-          {user?.id ? (
-            <>
-              <button onClick={handleLogout} className="btn">
-                Logout
-              </button>
-            </>
-          ) : (
-            <div>
-              <Link to={"/login"} className="btn">
-                Login
-              </Link>
-            </div>
-          )}
-        </li>
-      )}
-
       {user?.id && (
         <li>
           {user.role === "user" && <Link to={"/dashboard"}>Dashboard</Link>}
@@ -110,13 +92,13 @@ const Navbar = () => {
           <>
             {user?.id ? (
               <>
-                <button onClick={logout} className="btn">
+                <button onClick={handleLogout} className="btn">
                   Logout
                 </button>
               </>
             ) : (
               <div>
-                <Link href={"/login"} className="btn">
+                <Link to={"/login"} className="btn">
                   Login
                 </Link>
               </div>

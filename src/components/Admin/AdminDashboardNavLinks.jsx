@@ -25,6 +25,12 @@ const AdminDashboardNavLinks = () => {
       </li>
       <li
         className={`hover:bg-indigo-600 ${
+          pathname === "/" ? "bg-indigo-600" : ""
+        } px-3 py-2 rounded-lg cursor-pointer transition `}>
+        <Link to={"/"}>Home</Link>
+      </li>
+      <li
+        className={`hover:bg-indigo-600 ${
           pathname === "/admin/users" ? "bg-indigo-600" : ""
         } px-3 py-2 rounded-lg cursor-pointer transition `}>
         <Link to={"/admin/users"}>All Users</Link>

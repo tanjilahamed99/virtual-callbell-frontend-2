@@ -16,6 +16,7 @@ const DashboardLayout = () => {
           <Drawer
             links={[
               { href: "/dashboard", label: "Dashboard" },
+              { href: "/", label: "Home" },
               { href: "/dashboard/profile", label: "Profile" },
               { href: "/dashboard/subscriptions", label: "Subscriptions" },
               { href: "/dashboard/transactions", label: "Transaction" },
