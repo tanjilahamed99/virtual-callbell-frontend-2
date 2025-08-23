@@ -68,8 +68,7 @@ const Dashboard = () => {
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
             Your Subscription
           </h2>
-          <div
-            className="mt-2 text-xs sm:text-sm text-gray-700 space-y-1">
+          <div className="mt-2 text-xs sm:text-sm text-gray-700 space-y-1">
             <p>
               <span className="font-medium">Plan:</span>{" "}
               {myInfo?.subscription?.plan}
@@ -84,7 +83,7 @@ const Dashboard = () => {
             </p>
             <p>
               <span className="font-medium">Ends on:</span>{" "}
-              {myInfo?.subscription?.endDate?.slice(0,10)}
+              {myInfo?.subscription?.endDate?.slice(0, 10)}
             </p>
           </div>
         </div>
@@ -108,6 +107,7 @@ const Dashboard = () => {
               <th className="px-2 sm:px-3 py-1 sm:py-2 font-medium">
                 Duration
               </th>
+              <th className="px-2 sm:px-3 py-1 sm:py-2 font-medium">Minute</th>
               <th className="px-2 sm:px-3 py-1 sm:py-2 font-medium">Amount</th>
               <th className="px-2 sm:px-3 py-1 sm:py-2 font-medium">Status</th>
             </tr>
@@ -121,8 +121,9 @@ const Dashboard = () => {
                 </td>
                 <td className="px-2 sm:px-3 py-1 sm:py-2">{tran.plan}</td>
                 <td className="px-2 sm:px-3 py-1 sm:py-2">
-                  {tran.planDuration}
+                  {tran.planDuration} days
                 </td>
+                <td className="px-2 sm:px-3 py-1 sm:py-2">{tran.planMinute} minutes</td>
                 <td className="px-2 sm:px-3 py-1 sm:py-2">₹{tran.amount}</td>
                 <td
                   className={`px-2 sm:px-3 py-1 sm:py-2 font-medium ${

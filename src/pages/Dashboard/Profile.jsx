@@ -192,7 +192,7 @@ const Profile = () => {
           )}
         </div>
 
-        {getRemainingDays(myInfo?.subscription?.endDate) > 1 ? (
+        {getRemainingDays(myInfo?.subscription?.endDate) && myInfo?.subscription?.minute > 1 ? (
           <QrCode user={user} />
         ) : (
           <div className="my-10 text-black font-semibold">
