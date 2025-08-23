@@ -19,18 +19,14 @@ const Home = () => {
         <Navbar />
       </header>
 
-      {/* Hero Section */}
-      <section className="flex-1 flex flex-col items-center justify-center px-6 py-24 bg-gradient-to-r from-indigo-50 to-blue-50 text-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
-          Welcome to Virtual-Callbell
-        </h1>
-        <p className="mt-4 text-gray-600 text-lg sm:text-xl max-w-3xl">
-          Connect seamlessly, explore features, and enjoy a smooth, professional
-          experience.
-        </p>
-        <div className="mt-8">
-        </div>
-      </section>
+      <div
+        className="hero min-h-screen"
+        style={{
+          backgroundImage: "url(banner.jpeg)",
+        }}>
+        <div className="hero-overlay opacity-30"></div>
+        <div className="hero-content text-neutral-content text-center"></div>
+      </div>
 
       {/* Features Section */}
       <section className="px-6 py-24 bg-white">
