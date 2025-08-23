@@ -1,6 +1,5 @@
 import {
   ControlBar,
-  GridLayout,
   ParticipantTile,
   RoomAudioRenderer,
   useTracks,
@@ -11,23 +10,22 @@ import "@livekit/components-styles";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../../config/constant";
 import axios from "axios";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 const serverUrl = import.meta.env.VITE_LIVEKIT_URL;
 
 export default function RoomPage() {
   const [token, setToken] = useState("");
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
   let roomName = searchParams.get("roomName");
   let username = searchParams.get("username");
-  const navigate = useNavigate();
 
   const [room] = useState(
     () =>
       new Room({
-        // Optimize video quality for each participant's screen
         adaptiveStream: true,
-        // Enable automatic audio/video quality optimization
         dynacast: true,
       })
   );
@@ -43,9 +41,9 @@ export default function RoomPage() {
       };
       connect();
 
-      // listen for disconnect → redirect home
+      // ✅ instant redirect when disconnected
       room.on("disconnected", () => {
-        navigate("/");
+        navigate("/", { replace: true });
       });
 
       return () => {
@@ -69,11 +67,8 @@ export default function RoomPage() {
   return (
     <RoomContext.Provider value={room}>
       <div data-lk-theme="default" style={{ height: "100vh" }}>
-        {/* Your custom component with basic video conferencing functionality. */}
         <MyVideoConference />
-        {/* The RoomAudioRenderer takes care of room-wide audio for you. */}
         <RoomAudioRenderer />
-        {/* Controls for the user to start/stop audio, video, and screen share tracks */}
         <ControlBar />
       </div>
     </RoomContext.Provider>
@@ -81,8 +76,6 @@ export default function RoomPage() {
 }
 
 function MyVideoConference() {
-  // `useTracks` returns all camera and screen share tracks. If a user
-  // joins without a published camera track, a placeholder track is returned.
   const tracks = useTracks(
     [
       { source: Track.Source.Camera, withPlaceholder: true },
@@ -90,13 +83,33 @@ function MyVideoConference() {
     ],
     { onlySubscribed: false }
   );
+
+  const localTrack = tracks.find((t) => t.participant.isLocal);
+  const remoteTracks = tracks.filter((t) => !t.participant.isLocal);
+
   return (
-    <GridLayout
-      tracks={tracks}
-      style={{ height: "calc(100vh - var(--lk-control-bar-height))" }}>
-      {/* The GridLayout accepts zero or one child. The child is used
-      as a template to render all passed in tracks. */}
-      <ParticipantTile />
-    </GridLayout>
+    <div className="w-full h-[90vh] relative bg-black">
+      {/* Remote participant(s) full screen */}
+      <div className="w-full h-full flex items-center justify-center">
+        {remoteTracks.length > 0 ? (
+          remoteTracks.map((track) => (
+            <ParticipantTile
+              key={track.participant.identity + track.source}
+              trackRef={track}
+              className="w-full h-full object-cover"
+            />
+          ))
+        ) : (
+          <div className="text-white text-xl">Waiting for other user...</div>
+        )}
+      </div>
+
+      {/* Local participant small top-right corner */}
+      {localTrack && (
+        <div className="absolute top-4 right-4 w-40 h-28 rounded-lg overflow-hidden shadow-lg border-2 border-white">
+          <ParticipantTile trackRef={localTrack} />
+        </div>
+      )}
+    </div>
   );
 }
