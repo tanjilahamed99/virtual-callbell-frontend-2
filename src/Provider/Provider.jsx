@@ -29,8 +29,6 @@ export const Provider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [myInfo, setMyInfo] = useState(null);
 
-  console.log(myInfo);
-
   const logout = async () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
