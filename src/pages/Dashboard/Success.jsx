@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useCall } from "../../Provider/Provider";
 import { BASE_URL } from "../../config/constant";
@@ -13,7 +13,6 @@ const Success = () => {
   const [searchParams] = useSearchParams();
   let refId = searchParams.get("refId");
   let subId = searchParams.get("subId");
-  console.log(subId);
 
   const back = () => {
     navigate("/dashboard/subscriptions");
@@ -48,6 +47,10 @@ const Success = () => {
       fetchStatus();
     }
   }, [refId, user, subId]);
+
+  if (!subId || !refId) {
+    return <Navigate to="/dashboard/subscriptions" replace />;
+  }
 
   return (
     <div>
