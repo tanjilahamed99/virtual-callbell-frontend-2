@@ -53,6 +53,10 @@ const Contact = () => {
           }}>
           Contact Us
         </h2>
+        <p className="mt-3 text-base leading-6 text-center">
+          Tara Tower, Polytechnic Crossing, Jaunpur (UP) 222002 <br />
+          <span className="block mt-1">📞 +91-8299065387</span>
+        </p>
         <p
           style={{ fontSize: "1.1rem", color: "#4b5563", textAlign: "center" }}>
           We love to hear from you. Fill out the form below to get in touch.
