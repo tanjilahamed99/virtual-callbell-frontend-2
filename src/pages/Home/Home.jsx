@@ -22,10 +22,12 @@ const Home = () => {
       <div
         className="hero min-h-screen"
         style={{
-          backgroundImage: "url(banner.jpeg)",
+          backgroundImage: "url(banner2.jpg)",
         }}>
         <div className="hero-overlay opacity-30"></div>
-        <div className="hero-content text-neutral-content text-center"></div>
+        <div className="hero-content text-neutral-content text-center">
+          <img src="mainBanner.jpg" className="w-full  md:h-[85vh]"/>
+        </div>
       </div>
 
       {/* Features Section */}
