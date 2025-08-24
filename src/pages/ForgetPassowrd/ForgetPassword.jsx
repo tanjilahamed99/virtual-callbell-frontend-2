@@ -84,15 +84,16 @@ const ForgetPassword = () => {
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center">
       {/* Background */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/login.jpg')" }}
-      />
+      <div className="absolute inset-0 bg-cover bg-center" />
 
-      <div className="absolute inset-0 bg-black/60" />
+      <div className="absolute inset-0 bg-white" />
 
       {/* Card */}
-      <div className="relative z-10 w-full max-w-sm rounded-2xl border bg-white/90 p-6 shadow-lg backdrop-blur-md dark:border-zinc-700 dark:bg-zinc-900/90 sm:p-8">
+      <div className="relative z-10 w-full max-w-sm rounded-2xl border bg-black p-6 shadow-lg backdrop-blur-md dark:border-zinc-700 sm:p-8">
+        <div>
+          <img src="/icon.png" alt="Login" className="w-20 h-20 mx-auto mb-5" />
+        </div>
+
         <h1 className="mb-6 text-center text-2xl font-bold uppercase tracking-wide">
           Forgot Password
         </h1>

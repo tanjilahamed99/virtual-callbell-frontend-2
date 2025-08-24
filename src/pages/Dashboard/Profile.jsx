@@ -115,7 +115,6 @@ const Profile = () => {
               <img
                 src={myInfo?.image}
                 alt="Profile"
-                fill
                 className="w-full h-full rounded-full bg-indigo-600 text-white flex items-center justify-center text-3xl font-bold border-4 border-indigo-500 shadow-md"
               />
             ) : (

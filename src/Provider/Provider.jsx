@@ -44,7 +44,7 @@ export const Provider = ({ children }) => {
       text: "You have logged out!",
       icon: "success",
     });
-    navigate("/");
+    navigate("/login");
   };
 
   // ✅ INIT LOGIC (moved from your init.js)

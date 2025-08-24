@@ -76,17 +76,19 @@ const AuthForm = () => {
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center">
       {/* Background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/login.jpg')" }}
-      />
+      <div className="absolute inset-0 bg-cover bg-center" />
 
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/70" />
+      <div className="absolute inset-0 bg-white" />
 
       {/* Form card */}
       <div className="relative z-10 w-full max-w-sm rounded-2xl border border-gray-700 bg-black p-6 shadow-lg backdrop-blur-md sm:p-8">
         {/* Scan Section */}
+
+        <div>
+          <img src="/icon.png" alt="Login" className="w-20 h-20 mx-auto mb-5" />
+        </div>
+
         <div className="mb-6 flex items-center justify-between rounded-xl border border-gray-600 p-2">
           <h2 className="text-lg font-semibold text-white tracking-tight">
             Scan for Call

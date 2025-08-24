@@ -48,9 +48,9 @@ const Dashboard = () => {
           </p>
         </div>
         <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden bg-white text-indigo-600 flex items-center justify-center text-xl sm:text-2xl font-bold">
-          {user?.photo ? (
+          {myInfo?.image ? (
             <img
-              src={user?.photo}
+              src={myInfo?.image}
               alt="Profile Picture"
               width={96}
               height={96}
@@ -123,7 +123,9 @@ const Dashboard = () => {
                 <td className="px-2 sm:px-3 py-1 sm:py-2">
                   {tran.planDuration} days
                 </td>
-                <td className="px-2 sm:px-3 py-1 sm:py-2">{tran.planMinute} minutes</td>
+                <td className="px-2 sm:px-3 py-1 sm:py-2">
+                  {tran.planMinute} minutes
+                </td>
                 <td className="px-2 sm:px-3 py-1 sm:py-2">₹{tran.amount}</td>
                 <td
                   className={`px-2 sm:px-3 py-1 sm:py-2 font-medium ${
