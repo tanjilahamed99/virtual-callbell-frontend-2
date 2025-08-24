@@ -129,8 +129,12 @@ export const Provider = ({ children }) => {
 
     socket.on("call-declined", () => {});
 
-    socket.on("end-call", ({ minutes }) => {
+    socket.on("end-call", () => {
       if (user) {
+        if (minutes <= 0) {
+          return navigate("/"); // redirect back to home (or show a modal)
+        }
+
         let newBalance = myInfo.subscription.minute - minutes;
 
         if (newBalance < 0) {
@@ -141,7 +145,12 @@ export const Provider = ({ children }) => {
           "subscription.minute": newBalance,
         };
         const fetch = async () => {
-          await updateUser({ id: user.id, data: dataa });
+          const { data } = await updateUser({ id: user.id, data: dataa });
+          if (data.success) {
+            setMinutes(0);
+            console.log(data);
+            return navigate("/"); // redirect back to home (or show a modal)
+          }
         };
         fetch();
       }
@@ -162,7 +171,7 @@ export const Provider = ({ children }) => {
       socket.off("end-call");
       socket.off("callCanceled");
     };
-  }, [user, navigate, myInfo]);
+  }, [user, navigate, myInfo, minutes]);
 
   useEffect(() => {
     if (user?.id) {
@@ -235,12 +244,12 @@ export const Provider = ({ children }) => {
   // ✅ Helper functions
   const handleEndCall = useCallback(
     (peerSocketId) => {
-      socket.emit("end-call", { targetSocketId: peerSocketId, minutes });
+      socket.emit("end-call", { targetSocketId: peerSocketId });
       setIsInCall(false);
       setStartTime(null);
-      setMinutes(0);
+      navigate("/");
     },
-    [minutes]
+    [navigate]
   );
 
   // ✅ Data available everywhere

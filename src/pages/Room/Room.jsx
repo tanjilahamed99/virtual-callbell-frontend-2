@@ -47,11 +47,12 @@ export default function RoomPage() {
       // ✅ instant redirect when disconnected
       room.on("disconnected", () => {
         handleEndCall(peerSocketId);
+        'close auto matic ? '
       });
 
       return () => {
         mounted = false;
-        room.disconnect();
+        // room.disconnect();
       };
     }
   }, [room, token, navigate, handleEndCall, peerSocketId]);
