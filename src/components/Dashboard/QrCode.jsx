@@ -39,7 +39,7 @@ const QrCode = ({ user = {} }) => {
 
   return (
     <div className="flex flex-col items-center p-4 bg-white shadow rounded space-y-4">
-      <h2 className="text-xl font-bold">Scan to connect with {user?.name}</h2>
+      <h2 className="text-xl font-bold text-black">Scan to connect with {user?.name}</h2>
       <div ref={qrRef}>
         <QRCodeCanvas value={qrValue} size={200} />
       </div>

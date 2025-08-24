@@ -1,18 +1,12 @@
-"use client";
-
 import { Menu } from "lucide-react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React, { useRef } from "react";
-import { useGlobal } from "reactn";
-import Swal from "sweetalert2";
+import { useRef } from "react";
+import { useCall } from "../../Provider/Provider";
+import { Link, useLocation } from "react-router-dom";
 
-const Drawer = () => {
-  const pathname = usePathname();
+const Drawer = ({ links }) => {
+  const { pathname } = useLocation();
   const drawerRef = useRef(null);
-  const [user, setUser] = useGlobal("user");
-  const setToken = useGlobal("token")[1];
-  const router = useRouter();
+  const { logout } = useCall();
 
   // Function to close the drawer
   const closeDrawer = () => {
@@ -21,26 +15,9 @@ const Drawer = () => {
     }
   };
 
-  const logout = async () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    await setToken(null);
-    await setUser({});
-    Swal.fire({
-      title: "Successful",
-      text: "You have logged out!",
-      icon: "success",
-    });
-    router.push("/");
+  const handleLogout = () => {
+    logout();
   };
-
-  // Sidebar links
-  const links = [
-    { href: "/dashboard", label: "Dashboard" },
-    { href: "/dashboard/profile", label: "Profile" },
-    { href: "/dashboard/subscriptions", label: "Subscriptions" },
-    { href: "/dashboard/transactions", label: "Transaction" },
-  ];
 
   return (
     <div className="navbar bg-gray-300 shadow-sm">
@@ -68,15 +45,15 @@ const Drawer = () => {
                 <li
                   key={link.href}
                   className={`hover:bg-indigo-600 ${
-                    pathname === link.href ? "bg-indigo-600" : ""
+                    pathname === link.href ? "bg-indigo-600 text-white" : ""
                   } px-3 py-2 rounded-lg cursor-pointer transition`}>
-                  <Link href={link.href} onClick={closeDrawer}>
+                  <Link to={link.href} onClick={closeDrawer}>
                     {link.label}
                   </Link>
                 </li>
               ))}
               <li
-                onClick={logout}
+                onClick={handleLogout}
                 className={`hover:bg-indigo-600  px-3 py-2 rounded-lg cursor-pointer transition`}>
                 <p>Logout</p>
               </li>
@@ -87,7 +64,7 @@ const Drawer = () => {
 
       {/* Logo */}
       <div className="flex-none">
-        <h2 className="font-bold text-indigo-600">Virtual-Callbell</h2>
+        <h2 className="font-bold text-indigo-600">Call Bell</h2>
       </div>
     </div>
   );

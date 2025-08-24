@@ -1,14 +1,12 @@
-"use client";
-
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Html5Qrcode } from "html5-qrcode";
-import { useRouter } from "next/navigation";
 import { ScanLine, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const QrScanner = () => {
   const [scannerOpen, setScannerOpen] = useState(false);
   const html5QrCodeRef = useRef(null);
-  const router = useRouter();
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!scannerOpen) return;
@@ -26,7 +24,7 @@ const QrScanner = () => {
           html5QrCode.stop().catch(() => {}); // ignore stop errors here
 
           setScannerOpen(false);
-          router.push(`/userInfo?${decodedText}`);
+          navigate(`/userInfo?${decodedText}`);
         },
         (errorMessage) => {
           console.warn(errorMessage);
@@ -40,7 +38,7 @@ const QrScanner = () => {
         html5QrCodeRef.current.stop().catch(() => {});
       }
     };
-  }, [scannerOpen, router]);
+  }, [scannerOpen, navigate]);
 
   const closeScanner = async () => {
     if (html5QrCodeRef.current) {

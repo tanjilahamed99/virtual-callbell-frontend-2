@@ -1,67 +1,43 @@
-// import { useGlobal } from "reactn";
 import Swal from "sweetalert2";
-// import QrScanner from "../Dashboard/QrScaner";
 import { Link } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useCall } from "../../Provider/Provider";
+import QrScanner from "../Dashboard/QrScaner";
 
 const Navbar = () => {
-  // const [user, setUser] = useGlobal("user");
-  // const setToken = useGlobal("token")[1];
-  // const navigate = useNavigate();
+  const { user, logout } = useCall();
+  const navigate = useNavigate();
 
-  // const logout = async () => {
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("user");
-  //   // await setToken(null);
-  //   // await setUser({});
-  //   Swal.fire({
-  //     title: "Successful",
-  //     text: "You have logged out!",
-  //     icon: "success",
-  //   });
-  //   navigate("/");
-  // };
+  const handleLogout = async () => {
+    logout();
+    navigate("/");
+  };
 
   const ulLInks = (
     <>
-      {/* <div className="hidden lg:block">{!user?.id && <QrScanner />}</div> */}
       <li>
-        <a>About us</a>
+        <Link to={"/"}>Home</Link>
       </li>
       <li>
-        <a>Privacy Policy</a>
+        <Link to={"/about"}>About us</Link>
       </li>
       <li>
-        <a>Terms of use</a>
+        <Link to={"/privacy"}>Privacy Policy</Link>
       </li>
       <li>
-        <a>Contact us</a>
+        <Link to={"/terms"}>Terms of use</Link>
       </li>
-      {/* {!user?.id && (
-        <li className="lg:hidden">
-          {user?.id ? (
-            <>
-              <button onClick={logout} className="btn">
-                Logout
-              </button>
-            </>
-          ) : (
-            <div>
-              <Link to={"/login"} className="btn">
-                Login
-              </Link>
-            </div>
-          )}
-        </li>
-      )} */}
-
-      {/* {user?.id && (
+      <li>
+        <Link to={"/contact"}>Contact us</Link>
+      </li>
+      {user?.id && (
         <li>
-          <Link href={"/dashboard"}>Dashboard</Link>
+          {user.role === "user" && <Link to={"/dashboard"}>Dashboard</Link>}
+          {user.role === "admin" && <Link to={"/admin"}>Admin Panel</Link>}
         </li>
-      )} */}
+      )}
     </>
-);
+  );
 
   return (
     <div className="navbar bg-black shadow-sm text-white">
@@ -85,17 +61,19 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow text-white">
+            className="menu menu-sm dropdown-content bg-black rounded-box z-1 mt-3 w-52 p-2 shadow text-white">
             {ulLInks}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl font-bold text-white">Virtual-callbell</a>
+        <Link to={'/'} className="btn btn-ghost text-xl font-bold text-white font-serif">
+          Call Bell
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 items-center">{ulLInks}</ul>
       </div>
       <div className="navbar-end">
-        {/* <div className="hidden lg:inline">
+        <div className="hidden lg:inline">
           {user?.id ? (
             <>
               <button onClick={logout} className="btn">
@@ -104,33 +82,29 @@ const Navbar = () => {
             </>
           ) : (
             <div>
-              <Link href={"/login"} className="btn">
+              <Link to={"/login"} className="btn">
                 Login
               </Link>
             </div>
           )}
-        </div> */}
-        {/* <div className="lg:hidden">
-          {!user?.id ? (
-            <QrScanner />
-          ) : (
-            <>
-              {user?.id ? (
-                <>
-                  <button onClick={logout} className="btn">
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <div>
-                  <Link href={"/login"} className="btn">
-                    Login
-                  </Link>
-                </div>
-              )}
-            </>
-          )}
-        </div> */}
+        </div>
+        <div className="lg:hidden">
+          <>
+            {user?.id ? (
+              <>
+                <button onClick={handleLogout} className="btn">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <div>
+                <Link to={"/login"} className="btn">
+                  Login
+                </Link>
+              </div>
+            )}
+          </>
+        </div>
       </div>
     </div>
   );
