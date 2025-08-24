@@ -8,6 +8,21 @@ const AllUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useCall();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredUsers = users?.filter((txn) => {
+    const matchesSearch =
+      txn?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      txn?.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      txn?.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      txn?.phone.toLowerCase().includes(searchTerm.toLowerCase());
+
+    return matchesSearch;
+  });
 
   const getRemainingDays = (endDate) => {
     const today = new Date();
@@ -75,6 +90,17 @@ const AllUsers = () => {
         Admin - All Users
       </h1>
 
+      {/* Search and Filter */}
+      <div className="flex flex-col md:flex-row md:items-center mb-4 gap-4">
+        <input
+          type="text"
+          placeholder="Search by ID, email, name, or amount..."
+          value={searchTerm}
+          onChange={handleSearch}
+          className="border rounded px-4 py-2 w-full md:w-1/2 border-black text-black"
+        />
+      </div>
+
       <div className="bg-white rounded-xl shadow-md p-6 md:p-10 overflow-x-auto">
         <table className="min-w-full text-left text-gray-700 text-xs sm:text-sm">
           <thead>
@@ -89,7 +115,7 @@ const AllUsers = () => {
             </tr>
           </thead>
           <tbody>
-            {users?.map((user, idx) => (
+            {filteredUsers?.map((user, idx) => (
               <tr key={idx} className="border-b border-gray-200">
                 <td className="px-3 py-2">{idx + 1}</td>
                 <td className="px-3 py-2">{user?.name}</td>
