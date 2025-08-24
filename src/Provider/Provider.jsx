@@ -15,6 +15,7 @@ import { BASE_URL } from "../config/constant";
 import socket from "../utils/soket";
 import Swal from "sweetalert2";
 import myData from "../hooks/users/myData";
+import updateUser from "../hooks/users/updateUser";
 
 const CallContext = createContext();
 
@@ -31,7 +32,7 @@ export const Provider = ({ children }) => {
   const [minutes, setMinutes] = useState(0);
   const [isInCall, setIsInCall] = useState(false);
   const [startTime, setStartTime] = useState(null);
-  console.log(minutes);
+  const [isRoomClosed, setIsRoomClosed] = useState(false);
 
   const logout = async () => {
     localStorage.removeItem("token");
@@ -127,6 +128,26 @@ export const Provider = ({ children }) => {
     });
 
     socket.on("call-declined", () => {});
+
+    socket.on("end-call", ({ minutes }) => {
+      if (user) {
+        let newBalance = myInfo.subscription.minute - minutes;
+
+        if (newBalance < 0) {
+          newBalance = 0;
+        }
+
+        const dataa = {
+          "subscription.minute": newBalance,
+        };
+        const fetch = async () => {
+          await updateUser({ id: user.id, data: dataa });
+        };
+        fetch();
+      }
+      navigate("/"); // redirect back to home (or show a modal)
+    });
+
     socket.on("callCanceled", (data) => {
       if (data.success) {
         setModalOpen(false);
@@ -138,9 +159,10 @@ export const Provider = ({ children }) => {
       socket.off("incoming-call");
       socket.off("call-accepted");
       socket.off("call-declined");
+      socket.off("end-call");
       socket.off("callCanceled");
     };
-  }, [user, navigate]);
+  }, [user, navigate, myInfo]);
 
   useEffect(() => {
     if (user?.id) {
@@ -210,8 +232,20 @@ export const Provider = ({ children }) => {
     );
   }, [incomingCall, navigate, user, myInfo]);
 
+  // ✅ Helper functions
+  const handleEndCall = useCallback(
+    (peerSocketId) => {
+      socket.emit("end-call", { targetSocketId: peerSocketId, minutes });
+      setIsInCall(false);
+      setStartTime(null);
+      setMinutes(0);
+    },
+    [minutes]
+  );
+
   // ✅ Data available everywhere
   const data = {
+    handleEndCall,
     incomingCall,
     declineCall,
     acceptCall,
@@ -222,6 +256,8 @@ export const Provider = ({ children }) => {
     setToken,
     logout,
     loading,
+    isRoomClosed,
+    setIsRoomClosed,
   };
 
   return <CallContext.Provider value={data}>{children}</CallContext.Provider>;

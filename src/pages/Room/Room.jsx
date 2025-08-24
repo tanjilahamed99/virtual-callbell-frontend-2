@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { BASE_URL } from "../../config/constant";
 import axios from "axios";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { useCall } from "../../Provider/Provider";
 
 const serverUrl = import.meta.env.VITE_LIVEKIT_URL;
 
@@ -18,9 +19,11 @@ export default function RoomPage() {
   const [token, setToken] = useState("");
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { handleEndCall } = useCall();
 
   let roomName = searchParams.get("roomName");
   let username = searchParams.get("username");
+  let peerSocketId = searchParams.get("peerSocketId");
 
   const [room] = useState(
     () =>
@@ -43,7 +46,7 @@ export default function RoomPage() {
 
       // ✅ instant redirect when disconnected
       room.on("disconnected", () => {
-        navigate("/", { replace: true });
+        handleEndCall(peerSocketId);
       });
 
       return () => {
@@ -51,7 +54,7 @@ export default function RoomPage() {
         room.disconnect();
       };
     }
-  }, [room, token, navigate]);
+  }, [room, token, navigate, handleEndCall, peerSocketId]);
 
   useEffect(() => {
     const fetch = async () => {
