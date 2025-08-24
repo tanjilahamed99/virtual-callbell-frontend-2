@@ -11,6 +11,8 @@ const Profile = () => {
   const fileInputRef = useRef(null);
   const [myInfo, setMyInfo] = useState(null);
   const { user } = useCall();
+  const [refetch, setRefetch] = useState(false);
+
   // initials
   const initials = myInfo?.name
     .split(" ")
@@ -25,11 +27,42 @@ const Profile = () => {
   };
 
   // set new profile image
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      //       const imageUrl = URL.createObjectURL(file);
-      // setUser((prev) => ({ ...prev, image: imageUrl }));
+    if (!file) return;
+
+    // create form data
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const res = await fetch(
+        `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_IMAGEBB_API_KEY
+        }`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        const imageUrl = data.data.url; // uploaded image url
+        const { data: res } = await updateUser({
+          id: user.id,
+          data: { image: imageUrl },
+        });
+        console.log(res);
+        if (res.success) {
+          setRefetch(!refetch);
+        }
+      } else {
+        console.error("Upload failed:", data);
+      }
+    } catch (err) {
+      console.error("Error uploading image:", err);
     }
   };
 
@@ -71,7 +104,7 @@ const Profile = () => {
       };
       fetch();
     }
-  }, [user]);
+  }, [user, refetch]);
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
       <div className="bg-white rounded-2xl shadow-lg w-full max-w-3xl p-8">
@@ -79,11 +112,11 @@ const Profile = () => {
         <div className="flex flex-col items-center">
           <div className="relative w-32 h-32 flex items-center justify-center">
             {myInfo?.image ? (
-              <Image
+              <img
                 src={myInfo?.image}
                 alt="Profile"
                 fill
-                className="rounded-full object-cover border-4 border-indigo-500 shadow-md"
+                className="w-full h-full rounded-full bg-indigo-600 text-white flex items-center justify-center text-3xl font-bold border-4 border-indigo-500 shadow-md"
               />
             ) : (
               <div className="w-full h-full rounded-full bg-indigo-600 text-white flex items-center justify-center text-3xl font-bold border-4 border-indigo-500 shadow-md">
@@ -192,11 +225,12 @@ const Profile = () => {
           )}
         </div>
 
-        {getRemainingDays(myInfo?.subscription?.endDate) && myInfo?.subscription?.minute > 1 ? (
+        {getRemainingDays(myInfo?.subscription?.endDate) &&
+        myInfo?.subscription?.minute > 1 ? (
           <QrCode user={user} />
         ) : (
           <div className="my-10 text-black font-semibold">
-            Please renew your subscription to get QR code for call gest direct. {' '}
+            Please renew your subscription to get QR code for call gest direct.{" "}
             <Link
               to={"/dashboard/subscriptions"}
               className="text-blue-600 hover:underline">
