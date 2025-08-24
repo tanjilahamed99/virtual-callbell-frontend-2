@@ -9,6 +9,9 @@ const AllUsers = () => {
   const [loading, setLoading] = useState(true);
   const { user } = useCall();
   const [searchTerm, setSearchTerm] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [resetFilters, setResetFilters] = useState(false);
   console.log(users);
 
   const handleSearch = (e) => {
@@ -92,14 +95,67 @@ const AllUsers = () => {
       </h1>
 
       {/* Search and Filter */}
-      <div className="flex flex-col md:flex-row md:items-center mb-4 gap-4">
-        <input
-          type="text"
-          placeholder="Search by ID, email, name, or amount..."
-          value={searchTerm}
-          onChange={handleSearch}
-          className="border rounded px-4 py-2 w-full md:w-1/2 border-black text-black"
-        />
+      {/* Search & Filter Section */}
+      <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-4 mb-6">
+        <div className="flex flex-col xl:flex-row xl:items-end gap-4">
+          {/* Search Input */}
+          <div className="flex flex-col w-full md:w-1/3">
+            <label className="text-sm font-medium text-gray-700 mb-1">
+              Search
+            </label>
+            <input
+              type="text"
+              placeholder="Search by ID, email, name, or amount..."
+              value={searchTerm}
+              onChange={handleSearch}
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 text-sm shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition"
+            />
+          </div>
+
+          {/* Status Filter */}
+          {/* Date Range */}
+          <div className="flex flex-col md:flex-row gap-4 w-full md:w-1/3">
+            <div className="flex flex-col w-full">
+              <label className="text-sm font-medium text-gray-700 mb-1">
+                From Date
+              </label>
+              <input
+                type="date"
+                value={fromDate}
+                onChange={(e) => setFromDate(e.target.value)}
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 text-sm shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition"
+              />
+            </div>
+            <div className="flex flex-col w-full">
+              <label className="text-sm font-medium text-gray-700 mb-1">
+                To Date
+              </label>
+              <input
+                type="date"
+                value={toDate}
+                onChange={(e) => setToDate(e.target.value)}
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 text-sm shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition"
+              />
+            </div>
+          </div>
+
+          {/* Reset Button */}
+          <div className="flex flex-col w-full md:w-auto">
+            <label className="text-sm font-medium text-transparent mb-1">
+              Reset
+            </label>
+            <button
+              className="w-full md:w-auto px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-100 transition"
+              onClick={() => {
+                setFromDate("");
+                setToDate("");
+                setSearchTerm("");
+                setResetFilters(!resetFilters);
+              }}>
+              Reset
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-md p-6 md:p-10 overflow-x-auto">

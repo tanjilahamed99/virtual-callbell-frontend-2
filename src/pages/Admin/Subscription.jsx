@@ -9,19 +9,29 @@ const AdminSubscription = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [resetFilters, setResetFilters] = useState(false);
+  const [refetch, setRefetch] = useState(false);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
   const filteredSubscriptions = subscriptions?.filter((txn) => {
+    const txnDate = new Date(txn?.createdAt); // <-- ISO string works here
+
     const matchesSearch =
       txn?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       txn?.duration.toString().includes(searchTerm) ||
       txn?.minute.toString().includes(searchTerm) ||
       txn?.price.toString().includes(searchTerm);
 
-    return matchesSearch;
+    const matchesDate =
+      (!fromDate || txnDate >= new Date(fromDate)) &&
+      (!toDate || txnDate <= new Date(toDate + "T23:59:59Z"));
+
+    return matchesSearch && matchesDate;
   });
 
   const [newSub, setNewSub] = useState({
@@ -47,7 +57,7 @@ const AdminSubscription = () => {
       }
     };
     fetchSubs();
-  }, []);
+  }, [refetch]);
 
   // Handle Add Subscription
   const handleAdd = async () => {
@@ -84,15 +94,7 @@ const AdminSubscription = () => {
     try {
       const { data } = await addNewWebsiteData(user.id, user.email, update);
       if (data.success) {
-        setSubscriptions([
-          {
-            duration: parseFloat(newSub.duration),
-            price: parseFloat(newSub.price),
-            name: newSub.name,
-            minute: parseFloat(newSub.minute),
-          },
-          ...subscriptions,
-        ]);
+        setRefetch(!refetch);
         setModalOpen(false);
         setNewSub({ name: "", duration: "", price: "", minute: "" });
         Swal.fire("Success", "Subscription added!", "success");
@@ -122,7 +124,7 @@ const AdminSubscription = () => {
         };
         const { data } = await addNewWebsiteData(user.id, user.email, update);
         if (data.success) {
-          setSubscriptions(subscriptions.filter((s) => s._id !== id));
+          setRefetch(!refetch);
           Swal.fire("Deleted!", "Subscription deleted.", "success");
         }
       } catch (err) {
@@ -155,14 +157,65 @@ const AdminSubscription = () => {
         </div>
 
         {/* Search and Filter */}
-        <div className="flex flex-col md:flex-row md:items-center mb-4 gap-4">
-          <input
-            type="text"
-            placeholder="Search by ID, email, name, or amount..."
-            value={searchTerm}
-            onChange={handleSearch}
-            className="border rounded px-4 py-2 w-full md:w-1/2 border-black text-black"
-          />
+        <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-4 mb-6">
+          <div className="flex flex-col xl:flex-row xl:items-end gap-4">
+            {/* Search Input */}
+            <div className="flex flex-col w-full md:w-1/3">
+              <label className="text-sm font-medium text-gray-700 mb-1">
+                Search
+              </label>
+              <input
+                type="text"
+                placeholder="Search by ID, email, name, or amount..."
+                value={searchTerm}
+                onChange={handleSearch}
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 text-sm shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition"
+              />
+            </div>
+
+            {/* Date Range */}
+            <div className="flex flex-col md:flex-row gap-4 w-full md:w-1/3">
+              <div className="flex flex-col w-full">
+                <label className="text-sm font-medium text-gray-700 mb-1">
+                  From Date
+                </label>
+                <input
+                  type="date"
+                  value={fromDate}
+                  onChange={(e) => setFromDate(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 text-sm shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition"
+                />
+              </div>
+              <div className="flex flex-col w-full">
+                <label className="text-sm font-medium text-gray-700 mb-1">
+                  To Date
+                </label>
+                <input
+                  type="date"
+                  value={toDate}
+                  onChange={(e) => setToDate(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 text-sm shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition"
+                />
+              </div>
+            </div>
+
+            {/* Reset Button */}
+            <div className="flex flex-col w-full md:w-auto">
+              <label className="text-sm font-medium text-transparent mb-1">
+                Reset
+              </label>
+              <button
+                className="w-full md:w-auto px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-100 transition"
+                onClick={() => {
+                  setFromDate("");
+                  setToDate("");
+                  setSearchTerm("");
+                  setResetFilters(!resetFilters);
+                }}>
+                Reset
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Subscription Table */}
