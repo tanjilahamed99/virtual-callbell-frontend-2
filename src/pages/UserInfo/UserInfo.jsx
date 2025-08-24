@@ -10,8 +10,6 @@ const UserInfo = () => {
   let userID = searchParams.get("userId");
   let userName = searchParams.get("name");
 
-  console.log(user);
-
   // initials
   const initials = userName
     .split(" ")

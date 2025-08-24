@@ -28,6 +28,10 @@ export const Provider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [myInfo, setMyInfo] = useState(null);
+  const [minutes, setMinutes] = useState(0);
+  const [isInCall, setIsInCall] = useState(false);
+  const [startTime, setStartTime] = useState(null);
+  console.log(minutes);
 
   const logout = async () => {
     localStorage.removeItem("token");
@@ -166,6 +170,17 @@ export const Provider = ({ children }) => {
     return diffDays > 0 ? diffDays : 0;
   };
 
+  useEffect(() => {
+    let interval;
+    if (isInCall && startTime) {
+      interval = setInterval(() => {
+        const diff = Math.floor((Date.now() - startTime) / 1000 / 60);
+        setMinutes(diff);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isInCall, startTime]);
+
   const acceptCall = useCallback(() => {
     if (!incomingCall) return;
 
@@ -186,6 +201,10 @@ export const Provider = ({ children }) => {
       guestSocketId: incomingCall.from.socketId,
     });
     setModalOpen(false);
+    setIsInCall(true);
+    setStartTime(Date.now());
+    setMinutes(0);
+
     navigate(
       `/room?roomName=${incomingCall.roomName}&username=${user.name}&peerSocketId=${incomingCall.from.socketId}`
     );
