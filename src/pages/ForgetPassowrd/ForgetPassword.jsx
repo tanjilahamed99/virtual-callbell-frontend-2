@@ -89,7 +89,7 @@ const ForgetPassword = () => {
       <div className="absolute inset-0 bg-white" />
 
       {/* Card */}
-      <div className="relative z-10 w-full max-w-sm rounded-2xl border bg-black p-6 shadow-lg backdrop-blur-md dark:border-zinc-700 sm:p-8">
+      <div className="relative z-10 w-full max-w-sm rounded-2xl border text-white bg-black p-6 shadow-lg backdrop-blur-md dark:border-zinc-700 sm:p-8">
         <div>
           <img src="/icon.png" alt="Login" className="w-20 h-20 mx-auto mb-5" />
         </div>

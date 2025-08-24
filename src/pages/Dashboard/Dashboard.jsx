@@ -44,7 +44,7 @@ const Dashboard = () => {
           </h1>
           <p className="mt-1 sm:mt-2 text-sm sm:text-base">
             Glad to see you at{" "}
-            <span className="font-medium">Virtual Callbell</span>
+            <span className="font-medium">Call Bell</span>
           </p>
         </div>
         <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden bg-white text-indigo-600 flex items-center justify-center text-xl sm:text-2xl font-bold">

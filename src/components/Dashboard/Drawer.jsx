@@ -64,7 +64,7 @@ const Drawer = ({ links }) => {
 
       {/* Logo */}
       <div className="flex-none">
-        <h2 className="font-bold text-indigo-600">Virtual-Callbell</h2>
+        <h2 className="font-bold text-indigo-600">Call Bell</h2>
       </div>
     </div>
   );

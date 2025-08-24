@@ -9,7 +9,7 @@ import CallRequest from "./CallRequest";
 
 export default function CallManager({
   userId,
-  userName = "Virtual-callbell-user",
+  userName = "CallBell-user",
 }) {
   const [waitingCall, setWaitingCall] = useState(false);
   const { user } = useCall();

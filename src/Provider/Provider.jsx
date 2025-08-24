@@ -56,9 +56,9 @@ export const Provider = ({ children }) => {
       });
 
       // Version check
-      if (localStorage.getItem("app") !== "Virtual 2.x.x") {
+      if (localStorage.getItem("app") !== "CallBell 2.x.x") {
         localStorage.clear();
-        localStorage.setItem("app", "Virtual 2.x.x");
+        localStorage.setItem("app", "CallBell 2.x.x");
       }
 
       let token = localStorage.getItem("token");
