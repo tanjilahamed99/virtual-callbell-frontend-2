@@ -270,7 +270,7 @@ const AdminSubscription = () => {
             <input
               required
               type="number"
-              placeholder="Price ($)"
+              placeholder="Price (₹)"
               value={newSub.price}
               onChange={(e) => setNewSub({ ...newSub, price: e.target.value })}
               className="w-full rounded-md border border-gray-300 px-3 py-2 mb-4 outline-none focus:ring-2 focus:ring-blue-500"

@@ -7,6 +7,9 @@ const AdminTransaction = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("All");
   const { user } = useCall();
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [resetFilters, setResetFilters] = useState(false);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -17,6 +20,8 @@ const AdminTransaction = () => {
   };
 
   const filteredTransactions = transactions?.filter((txn) => {
+    const txnDate = new Date(txn?.createdAt); // <-- ISO string works here
+
     const matchesSearch =
       txn?._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       txn?.plan.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -28,9 +33,13 @@ const AdminTransaction = () => {
 
     const matchesType = filterType === "All" ? true : txn.status === filterType;
 
-    return matchesSearch && matchesType;
-  });
+    // Date filter (include full day for toDate)
+    const matchesDate =
+      (!fromDate || txnDate >= new Date(fromDate)) &&
+      (!toDate || txnDate <= new Date(toDate + "T23:59:59Z"));
 
+    return matchesSearch && matchesType && matchesDate;
+  });
   useEffect(() => {
     if (user) {
       const fetch = async () => {
@@ -48,25 +57,86 @@ const AdminTransaction = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4 text-black">Admin - All Transactions</h1>
+      <h1 className="text-2xl font-bold mb-4 text-black">
+        Admin - All Transactions
+      </h1>
 
-      {/* Search and Filter */}
-      <div className="flex flex-col md:flex-row md:items-center mb-4 gap-4">
-        <input
-          type="text"
-          placeholder="Search by ID, email, name, or amount..."
-          value={searchTerm}
-          onChange={handleSearch}
-          className="border rounded px-4 py-2 w-full md:w-1/2 border-black text-black"
-        />
-        <select
-          value={filterType}
-          onChange={handleFilter}
-          className="border rounded px-4 py-2 w-full md:w-1/4 border-black text-black">
-          <option value="All">All Transactions</option>
-          <option value="Completed">Completed</option>
-          <option value="Cancel">Cancel</option>
-        </select>
+      {/* Search & Filter Section */}
+      <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-4 mb-6">
+        <div className="flex flex-col xl:flex-row xl:items-end gap-4">
+          {/* Search Input */}
+          <div className="flex flex-col w-full md:w-1/3">
+            <label className="text-sm font-medium text-gray-700 mb-1">
+              Search
+            </label>
+            <input
+              type="text"
+              placeholder="Search by ID, email, name, or amount..."
+              value={searchTerm}
+              onChange={handleSearch}
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 text-sm shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition"
+            />
+          </div>
+
+          {/* Status Filter */}
+          <div className="flex flex-col w-full md:w-1/4">
+            <label className="text-sm font-medium text-gray-700 mb-1">
+              Status
+            </label>
+            <select
+              value={filterType}
+              onChange={handleFilter}
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 text-sm shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition">
+              <option value="All">All Transactions</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancel">Cancel</option>
+            </select>
+          </div>
+
+          {/* Date Range */}
+          <div className="flex flex-col md:flex-row gap-4 w-full md:w-1/3">
+            <div className="flex flex-col w-full">
+              <label className="text-sm font-medium text-gray-700 mb-1">
+                From Date
+              </label>
+              <input
+                type="date"
+                value={fromDate}
+                onChange={(e) => setFromDate(e.target.value)}
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 text-sm shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition"
+              />
+            </div>
+            <div className="flex flex-col w-full">
+              <label className="text-sm font-medium text-gray-700 mb-1">
+                To Date
+              </label>
+              <input
+                type="date"
+                value={toDate}
+                onChange={(e) => setToDate(e.target.value)}
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 text-sm shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition"
+              />
+            </div>
+          </div>
+
+          {/* Reset Button */}
+          <div className="flex flex-col w-full md:w-auto">
+            <label className="text-sm font-medium text-transparent mb-1">
+              Reset
+            </label>
+            <button
+              className="w-full md:w-auto px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-100 transition"
+              onClick={() => {
+                setFromDate("");
+                setToDate("");
+                setSearchTerm("");
+                setFilterType("All");
+                setResetFilters(!resetFilters);
+              }}>
+              Reset
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Transactions Table */}

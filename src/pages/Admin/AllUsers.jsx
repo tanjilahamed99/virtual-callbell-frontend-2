@@ -9,6 +9,7 @@ const AllUsers = () => {
   const [loading, setLoading] = useState(true);
   const { user } = useCall();
   const [searchTerm, setSearchTerm] = useState("");
+  console.log(users);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
