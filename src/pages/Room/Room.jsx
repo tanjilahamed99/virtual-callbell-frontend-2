@@ -12,12 +12,14 @@ import { BASE_URL } from "../../config/constant";
 import axios from "axios";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useCall } from "../../Provider/Provider";
+import getLiveKitUrl from "../../hooks/users/getLiveKitUrl";
 
 export default function RoomPage() {
   const [token, setToken] = useState("");
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { handleEndCall, serverUrl } = useCall();
+  const { handleEndCall } = useCall();
+  const [liveKitUrl, setLiveKitUrl] = useState("");
 
   let roomName = searchParams.get("roomName");
   let username = searchParams.get("username");
@@ -33,11 +35,11 @@ export default function RoomPage() {
 
   // Connect to room
   useEffect(() => {
-    if (token) {
+    if (token && liveKitUrl) {
       let mounted = true;
       const connect = async () => {
         if (mounted) {
-          await room.connect(serverUrl, token);
+          await room.connect(liveKitUrl, token);
         }
       };
       connect();
@@ -53,7 +55,7 @@ export default function RoomPage() {
         // room.disconnect();
       };
     }
-  }, [room, token, navigate, handleEndCall, peerSocketId, serverUrl]);
+  }, [room, token, navigate, handleEndCall, peerSocketId, liveKitUrl]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -65,6 +67,21 @@ export default function RoomPage() {
     };
     fetch();
   }, [roomName, username]);
+
+  useEffect(() => {
+    const fetchLiveKitUrl = async () => {
+      try {
+        const { data } = await getLiveKitUrl();
+        console.log(data.data.url);
+        if (data.success) {
+          setLiveKitUrl(data.data.url);
+        }
+      } catch (error) {
+        console.error("Failed to fetch LiveKit URL:", error);
+      }
+    };
+    fetchLiveKitUrl();
+  }, []);
 
   return (
     <RoomContext.Provider value={room}>
