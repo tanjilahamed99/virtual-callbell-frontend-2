@@ -72,7 +72,6 @@ export default function RoomPage() {
     const fetchLiveKitUrl = async () => {
       try {
         const { data } = await getLiveKitUrl();
-        console.log(data.data.url);
         if (data.success) {
           setLiveKitUrl(data.data.url);
         }
