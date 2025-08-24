@@ -12,20 +12,26 @@ const AllUsers = () => {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [resetFilters, setResetFilters] = useState(false);
-  console.log(users);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
   const filteredUsers = users?.filter((txn) => {
+    const txnDate = new Date(txn?.createdAt); // <-- ISO string works here
+    
     const matchesSearch =
       txn?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       txn?.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       txn?.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
       txn?.phone.toLowerCase().includes(searchTerm.toLowerCase());
 
-    return matchesSearch;
+    
+     const matchesDate =
+      (!fromDate || txnDate >= new Date(fromDate)) &&
+      (!toDate || txnDate <= new Date(toDate + "T23:59:59Z"));
+
+    return matchesSearch && matchesDate;
   });
 
   const getRemainingDays = (endDate) => {
