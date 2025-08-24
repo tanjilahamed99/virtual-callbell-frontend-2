@@ -13,13 +13,11 @@ import axios from "axios";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useCall } from "../../Provider/Provider";
 
-const serverUrl = import.meta.env.VITE_LIVEKIT_URL;
-
 export default function RoomPage() {
   const [token, setToken] = useState("");
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { handleEndCall } = useCall();
+  const { handleEndCall, serverUrl } = useCall();
 
   let roomName = searchParams.get("roomName");
   let username = searchParams.get("username");
@@ -47,7 +45,7 @@ export default function RoomPage() {
       // ✅ instant redirect when disconnected
       room.on("disconnected", () => {
         handleEndCall(peerSocketId);
-        'close auto matic ? '
+        ("close auto matic ? ");
       });
 
       return () => {
@@ -55,7 +53,7 @@ export default function RoomPage() {
         // room.disconnect();
       };
     }
-  }, [room, token, navigate, handleEndCall, peerSocketId]);
+  }, [room, token, navigate, handleEndCall, peerSocketId, serverUrl]);
 
   useEffect(() => {
     const fetch = async () => {

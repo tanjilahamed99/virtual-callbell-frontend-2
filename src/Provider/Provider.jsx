@@ -16,6 +16,7 @@ import socket from "../utils/soket";
 import Swal from "sweetalert2";
 import myData from "../hooks/users/myData";
 import updateUser from "../hooks/users/updateUser";
+import getLiveKitUrl from "../hooks/users/getLiveKitUrl";
 
 const CallContext = createContext();
 
@@ -33,6 +34,7 @@ export const Provider = ({ children }) => {
   const [isInCall, setIsInCall] = useState(false);
   const [startTime, setStartTime] = useState(null);
   const [isRoomClosed, setIsRoomClosed] = useState(false);
+  const [liveKitUrl, setLiveKitUrl] = useState("");
 
   const logout = async () => {
     localStorage.removeItem("token");
@@ -252,8 +254,23 @@ export const Provider = ({ children }) => {
     [navigate]
   );
 
+  useEffect(() => {
+    const fetchLiveKitUrl = async () => {
+      try {
+        const { data } = await getLiveKitUrl();
+        if (data.success) {
+          setLiveKitUrl(data.data.url);
+        }
+      } catch (error) {
+        console.error("Failed to fetch LiveKit URL:", error);
+      }
+    };
+    fetchLiveKitUrl();
+  }, []);
+
   // ✅ Data available everywhere
   const data = {
+    liveKitUrl,
     handleEndCall,
     incomingCall,
     declineCall,
