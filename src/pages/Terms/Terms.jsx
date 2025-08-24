@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import getWebsiteData from "../../hooks/admin/getWebisteData";
 import Navbar from "../../components/Navbar/Navbar";
+import Footer from "../../components/Footer/Footer";
 
 const Terms = () => {
   const [privacyData, setPrivacyInfo] = useState("");
@@ -31,6 +32,7 @@ const Terms = () => {
           dangerouslySetInnerHTML={{ __html: privacyData }}
         />
       </div>
+      <Footer />
     </div>
   );
 };

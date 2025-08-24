@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import getWebsiteData from "../../hooks/admin/getWebisteData";
+import Footer from "../../components/Footer/Footer";
 
 const About = () => {
   const [aboutData, setAboutInfo] = useState("");
@@ -32,6 +33,7 @@ const About = () => {
           dangerouslySetInnerHTML={{ __html: aboutData }}
         />
       </div>
+      <Footer />
     </div>
   );
 };
