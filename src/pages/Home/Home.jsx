@@ -69,7 +69,7 @@ const Home = () => {
       </section>
 
       {/* Roles Section */}
-      <section className="px-6 py-24 bg-indigo-50">
+      <section className="px-6 py-24 bg-indigo-50">-
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-12">
             Website Roles
